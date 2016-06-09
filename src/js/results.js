@@ -81,7 +81,7 @@ new (function() {
         var minTxSize = 226; // bytes
         var bytesPerBlock = size * 1000 * 1000;
         var txsPerBlock = bytesPerBlock / minTxSize;
-        var txsPerSecond = txsPerBlock / time;
+        var txsPerSecond = txsPerBlock * blocksPerSecond;
         // costs
         var finalTotal = 0;
         var bandwidthType = DOM.bandwidthType.value;
