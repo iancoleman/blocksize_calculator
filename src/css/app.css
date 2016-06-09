@@ -1,0 +1,27 @@
+input.small {
+    display: inline-block;
+    width: 7em;
+    text-align: center;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+select.form-control {
+    display: inline-block;
+    width: auto;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.costs .bandwidth .options {
+    display: inline-block;
+}
+
+/* http://stackoverflow.com/a/22559163 */
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+}

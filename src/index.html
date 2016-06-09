@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Block Size Calculator
+        </title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/app.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="past">
+                <h1>Historical Context</h1>
+                <div class="load">
+                    <button class="btn btn-default">Load Data</button>
+                    (<span class="size">large</span> file)
+                </div>
+                <div class="loading hidden">
+                    Loading... may take quite a while
+                </div>
+                <div class="charts hidden">
+                    <div class="range">
+                        Between
+                        <!-- min and max date set by javascript -->
+                        <input class="start" type="date">
+                        and
+                        <input class="end" type="date">
+                    </div>
+                    <div class="stats">
+                        <strong><span class="blocks">1053</span></strong>
+                        blocks with an average block size of
+                        <strong>
+                            <span class="sizekb">660</span> kB
+                            (<span class="sizetxs">353</span> txs)
+                        </strong>
+                        and an average mining rate of
+                        1
+                        block every
+                        <strong><span class="timing">600</span></strong>
+                        seconds.
+                    <div class="chart">
+                        <div class="size col-md-4"></div>
+                        <div class="txlength col-md-4"></div>
+                        <div class="timing col-md-4"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="parameters">
+                <h1>Parameters</h1>
+                Simulate a
+                Max Block Size of
+                <input class="block-size form-control small" type="number" value="1">
+                MB at an average mining rate of
+                <input class="blocks form-control small" type="number" value="1">
+                <span class="block-grammar">block</span>
+                every
+                <input class="time form-control small" type="number" value="600">
+                seconds.
+            </div>
+            <div>
+                <h1>Results</h1>
+                <p>To support this scenario, the following constraints must be viable for all full nodes:</p>
+                <table class="results table table-striped table-hover">
+                    <thead>
+                        <th>Constraint</th>
+                        <th>Condition</th>
+                        <th>Value</th>
+                        <th>Unites</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Bandwidth</td>
+                            <td>must be at least</td>
+                            <td class="bandwidth">?</td>
+                            <td>Mbps</td>
+                        </tr>
+                        <tr>
+                            <td>Data Cap</td>
+                            <td>must be at least</td>
+                            <td class="data-cap">?</td>
+                            <td>GB per 31 days</td>
+                        </tr>
+                        <tr>
+                            <td>Supplied Disk Capacity</td>
+                            <td>must be at least</td>
+                            <td class="disk-consumption">?</td>
+                            <td>GB per year</td>
+                        </tr>
+                        <tr>
+                            <td>Transaction processing</td>
+                            <td>must be at least</td>
+                            <td class="processing">?</td>
+                            <td>transactions per second</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h1>Impact</h1>
+                <p>
+                    How does this affect the ability of the bitcoin network to
+                    achieve
+                    <a href="https://robotsfuckyeahalloneword.svbtle.com/bitcoin-goals-defined-by-the-whitepaper">
+                       the requirements</a>?
+                </p>
+               <ul>
+                   <li>
+                       <strong>Trustless</strong> -
+                       Online payments can be sent directly between two
+                       parties without relying on a trusted third party.
+                   </li>
+                   <li>
+                       <strong>Irreversible</strong> -
+                       Payments are non-reversible.
+                   </li>
+                   <li>
+                       <strong>Universal</strong> -
+                       Transactions should fill the needs of transfer
+                       regardless of size or purpose.
+                   </li>
+                   <li>
+                       <strong>Incentivized</strong> -
+                       Participation in line with the goals of bitcoin
+                       should yield greater utility than participation
+                       against the goals.
+                   </li>
+               </ul>
+               <div class="costs">
+                   <p>
+                       A full node operator must be able to meet the following
+                       ongoing costs whilst still remaining incentivized:
+                   </p>
+                    <table class="costs table table-striped table-hover">
+                        <thead>
+                            <th>Constraint</th>
+                            <th>Price</th>
+                            <th class="text-right">Annual Cost</th>
+                        </thead>
+                        <tbody>
+                            <tr class="bandwidth">
+                                <td>
+                                    <p class="form-control-static">
+                                        Bandwidth
+                                    </p>
+                                </td>
+                                <td>
+                                    <select class="type form-control">
+                                        <option value="unlimited">Unlimited</option>
+                                        <option value="capped">Capped</option>
+                                    </select>
+                                    <div class="unlimited options">
+                                        bandwidth for
+                                        $<input class="price form-control small" value="100" type="number">
+                                        per
+                                        <select class="time form-control">
+                                            <option value="3600">hour</option>
+                                            <option value="86400">day</option>
+                                            <option value="604800">week</option>
+                                            <option value="2628000" selected>month</option>
+                                            <option value="31536000">year</option>
+                                        </select>
+                                        at
+                                        <input class="speed form-control small" value="100" type="number">
+                                        Mbps
+                                    </div>
+                                    <div class="capped options hidden">
+                                        bandwidth at
+                                        <input class="size form-control small" value="300" type="number">
+                                        GB per
+                                        <select class="time form-control">
+                                            <option value="3600">hour</option>
+                                            <option value="86400">day</option>
+                                            <option value="604800">week</option>
+                                            <option value="2628000" selected>month</option>
+                                            <option value="31536000">year</option>
+                                        </select>
+                                        for
+                                        $<input class="price form-control small" value="100" type="number">
+                                    </div>
+                                </td>
+                                <td class="text-right">
+                                    <p class="form-control-static">
+                                        $<span class="total">1,200</span>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr class="disk">
+                                <td>
+                                    <p class="form-control-static">
+                                        Supplied Disk Capacity
+                                    </p>
+                                </td>
+                                <td>
+                                    <input class="size form-control small" value="2" type="number">
+                                    TB drive for
+                                    $<input class="price form-control small" value="100" type="number">
+                                </td>
+                                <td class="text-right">
+                                    <p class="form-control-static">
+                                        $<span class="total">15</span>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr class="final">
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td class="text-right">
+                                    <strong>TOTAL: $<span class="total">1,215</span></strong>
+                                    <p>per year</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+               </div>
+            </div>
+        </div>
+
+        <script src="js/select.js"></script>
+        <script src="js/fetch.js"></script>
+        <script src="js/Chart.js"></script>
+        <script src="js/block-data.js"></script>
+        <script src="js/results.js"></script>
+
+    </body>
+</html>
