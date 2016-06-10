@@ -9,6 +9,10 @@
     </head>
     <body>
         <div class="container">
+            <div class="about">
+                <h1>Block Size Calculator</h1>
+                <p>What is the effect of changing the bitcoin block size?</p>
+            </div>
             <div class="past">
                 <h1>Historical Context</h1>
                 <div class="load">
@@ -268,6 +272,33 @@
                             </tr>
                         </tbody>
                     </table>
+               </div>
+               <div class="complexity">
+                   <h1>Complexity</h1>
+                   <p>This is an <strong>extremely complex topic</strong> with subtlety and nuance.</p>
+                   <ul>
+                       <li>Bandwidth from newly announced blocks is not the only consumption of bandwidth resouces.</li>
+                       <ul>
+                           <li>Transaction relay</li>
+                           <li>New nodes syncing old blocks</li>
+                           <li>Other consumers of bandwidth</li>
+                       </ul>
+                       <li>Upload and download bandwidth is not uniform.</li>
+                       <li>Bandwidth availability can vary depending on general ISP congestion.</li>
+                       <li>Bitcoin does not use bandwidth in a uniform manner, tends to be in spikes.</li>
+                       <li>Blocks may arrive before the last one is received or processed.</li>
+                       <li>Transaction backlog and mempool requirements.</li>
+                       <li>Fees and the fee market, and how this affects the incentive structure for all participants of the network.</li>
+                       <li>The difference between miners and full nodes.</li>
+                       <li>The impact of orphan blocks and reorgs.</li>
+                       <li>Not all transaction processing produces the same cpu load.</li>
+                       <li>The impact of SPV wallets and miners, ie varying degrees of verification.</li>
+                       <li>The impact of alternative transaction techniques such as lightning network.</li>
+                       <li>The impact of block propagation techniques such as invertible bloom lookup tables.</li>
+                       <li>The impact of other bitcoin features that indirectly affect block size and propagation, such as replace-by-fee.</li>
+                       <li>The risk of hard or soft fork to implement desired changes.</li>
+                       <li>The value for max block size may be fixed or dynamic.</li>
+                   </ul>
                </div>
             </div>
         </div>
