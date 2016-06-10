@@ -5,12 +5,29 @@ input.small {
     margin-left: 5px;
     margin-right: 5px;
 }
+input.medium {
+    display: inline-block;
+    width: 14em;
+    text-align: center;
+    margin-left: 5px;
+    margin-right: 5px;
+}
 
 select.form-control {
     display: inline-block;
     width: auto;
     margin-left: 5px;
     margin-right: 5px;
+}
+
+code {
+    color: #333;
+    background: rgba(0,0,0,0);
+}
+
+.stats {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .complexity li {

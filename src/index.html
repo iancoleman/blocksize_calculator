@@ -11,7 +11,7 @@
         <div class="container">
             <div class="about">
                 <h1>Block Size Calculator</h1>
-                <p>What is the effect of changing the bitcoin block size?</p>
+                <p>What is the effect of changing the bitcoin <code>MAX_BLOCK_SIZE</code>?</p>
             </div>
             <div class="past">
                 <h1>Historical Context</h1>
@@ -26,9 +26,9 @@
                     <div class="range">
                         Between
                         <!-- min and max date set by javascript -->
-                        <input class="start" type="date" id="start" x-url-param>
+                        <input class="start form-control medium" type="date" id="start" x-url-param>
                         and
-                        <input class="end" type="date" id="end" x-url-param>
+                        <input class="end form-control medium" type="date" id="end" x-url-param>
                     </div>
                     <div class="stats">
                         <strong><span class="blocks">1053</span></strong>
@@ -42,6 +42,7 @@
                         block every
                         <strong><span class="timing">600</span></strong>
                         seconds.
+                    </div>
                     <div class="chart">
                         <div class="row">
                             <div class="size col-md-6"></div>
