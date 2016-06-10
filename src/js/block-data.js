@@ -74,11 +74,17 @@
                 var maxDateStr = dateStr(data[data.length-1].time);
                 DOM.start.setAttribute("min", minDateStr);
                 DOM.start.setAttribute("max", maxDateStr);
-                DOM.start.setAttribute("value", minDateStr);
+                if (DOM.start.value == "") {
+                    DOM.start.value = minDateStr;
+                    triggerEvent(DOM.start, "input");
+                }
                 DOM.start.addEventListener("input", render);
                 DOM.end.setAttribute("min", minDateStr);
                 DOM.end.setAttribute("max", maxDateStr);
-                DOM.end.setAttribute("value", maxDateStr);
+                if (DOM.end.value == "") {
+                    DOM.end.value = maxDateStr;
+                    triggerEvent(DOM.end, "input");
+                }
                 DOM.end.addEventListener("input", render);
                 render();
             },
@@ -222,6 +228,17 @@
     function dateStr(unixTime) {
         var d = new Date(unixTime * 1000);
         return d.toISOString().substring(0, 10);
+    }
+
+    function triggerEvent(element, eventName) {
+        if ("createEvent" in document) {
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent(eventName, false, true);
+            element.dispatchEvent(evt);
+        }
+        else {
+            element.fireEvent("on" + eventName);
+        }
     }
 
     init();
