@@ -22,7 +22,7 @@
 
     function showDataSize() {
         var request = new XMLHttpRequest();
-        request.open("HEAD", "/data/blocks.csv", true);
+        request.open("HEAD", "data/blocks.csv", true);
         request.onreadystatechange = function() {
             if (request.readyState == 4) {
                 if (request.status == 200) {
@@ -42,7 +42,7 @@
         // Show loading
         DOM.loading.classList.remove("hidden");
         // Load the data
-        Papa.parse("/data/blocks.csv", {
+        Papa.parse("data/blocks.csv", {
             download: true,
             complete: function(result) {
                 if (result.errors.length > 0) {
