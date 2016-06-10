@@ -3,7 +3,11 @@ import json
 import os
 import urllib2
 
-allBlocks = []
+# Save parsed data
+outputFilename = "blocks.csv"
+outputFile = open(outputFilename, 'w')
+outputFile.write("height,size,time,txlength\n");
+outputFile.close()
 
 fmt = "%Y-%m-%d"
 date=datetime.datetime(2009,1,9)
@@ -14,8 +18,9 @@ rootUrl = "https://insight.bitpay.com/api/blocks?blockDate="
 while date <= yesterday:
     dateStr = date.strftime(fmt)
     filename = "blocks_%s" % dateStr
-    # Fetch data from internet if required
+    # Fetch data
     if not os.path.isfile(filename):
+        # from internet
         blocksUrl = rootUrl + dateStr
         print "Fetching blocks for %s from %s" % (dateStr, blocksUrl)
         response = urllib2.urlopen(blocksUrl)
@@ -23,27 +28,24 @@ while date <= yesterday:
         f = open(filename, 'w')
         f.write(content)
         f.close()
-        # Save parsed data
-        dst = open("blocks.json", 'w')
-        dst.write(json.dumps(allBlocks, indent=2))
-        dst.close()
     else:
+        # from local cached file
         f = open(filename)
         content = f.read()
         f.close()
-    # Parse the data
+    # Parse data
     data = json.loads(content)
     data["blocks"].reverse()
+    outputFile = open(outputFilename, 'a')
     for block in data["blocks"]:
-        allBlocks.append({
-            "height": block["height"],
-            "size": block["size"],
-            "time": block["time"],
-            "txlength": block["txlength"],
-        })
+        row = "%s,%s,%s,%s\n" % (
+            block["height"],
+            block["size"],
+            block["time"],
+            block["txlength"],
+        )
+        # Save the data
+        outputFile.write(row)
+    outputFile.close()
     # Prepare for next iteration
     date = date + oneDay
-# Save parsed data
-dst = open("blocks.json", 'w')
-dst.write(json.dumps(allBlocks, indent=2))
-dst.close()
