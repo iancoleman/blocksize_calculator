@@ -156,10 +156,24 @@
                                 </td>
                                 <td>
                                     <select class="type form-control">
-                                        <option value="unlimited">Unlimited</option>
                                         <option value="capped">Capped</option>
+                                        <option value="unlimited">Unlimited</option>
                                     </select>
-                                    <div class="unlimited options">
+                                    <div class="capped options">
+                                        bandwidth at
+                                        <input class="size form-control small" value="1024" type="number" id="capped-size" x-url-param>
+                                        GB per
+                                        <select class="time form-control">
+                                            <option value="3600">hour</option>
+                                            <option value="86400">day</option>
+                                            <option value="604800">week</option>
+                                            <option value="2628000" selected>month</option>
+                                            <option value="31536000">year</option>
+                                        </select>
+                                        for
+                                        $<input class="price form-control small" value="49.99" type="number" id="capped-price" x-url-param>
+                                    </div>
+                                    <div class="unlimited options hidden">
                                         bandwidth for
                                         $<input class="price form-control small" value="70" type="number" id="unlimited-price" x-url-param>
                                         per
@@ -173,20 +187,6 @@
                                         at
                                         <input class="speed form-control small" value="1000" type="number" id="unlimited-speed" x-url-param>
                                         Mbps
-                                    </div>
-                                    <div class="capped options hidden">
-                                        bandwidth at
-                                        <input class="size form-control small" value="1024" type="number" id="capped-size" x-url-param>
-                                        GB per
-                                        <select class="time form-control">
-                                            <option value="3600">hour</option>
-                                            <option value="86400">day</option>
-                                            <option value="604800">week</option>
-                                            <option value="2628000" selected>month</option>
-                                            <option value="31536000">year</option>
-                                        </select>
-                                        for
-                                        $<input class="price form-control small" value="49.99" type="number" id="capped-price" x-url-param>
                                     </div>
                                 </td>
                                 <td></td>
