@@ -42,19 +42,37 @@ new (function() {
     DOM.laborCost = select(".labor .total");
 
     function init() {
-        DOM.size.addEventListener("input", render);
-        DOM.blocks.addEventListener("input", render);
-        DOM.time.addEventListener("input", render);
-        DOM.bandwidthType.addEventListener("change", render);
-        DOM.unlimitedPrice.addEventListener("input", render);
-        DOM.unlimitedTime.addEventListener("input", render);
-        DOM.unlimitedSpeed.addEventListener("input", render);
-        DOM.cappedSize.addEventListener("input", render);
-        DOM.cappedTime.addEventListener("input", render);
-        DOM.cappedPrice.addEventListener("input", render);
-        DOM.diskSize.addEventListener("input", render);
-        DOM.diskPrice.addEventListener("input", render);
+        setEvents();
         render();
+    }
+
+    function setEvents() {
+        var onInputEls = [
+            DOM.size,
+            DOM.blocks,
+            DOM.time,
+            DOM.unlimitedPrice,
+            DOM.unlimitedTime,
+            DOM.unlimitedSpeed,
+            DOM.cappedSize,
+            DOM.cappedTime,
+            DOM.cappedPrice,
+            DOM.diskSize,
+            DOM.diskPrice,
+            DOM.processingPrice,
+            DOM.processingRate,
+            DOM.laborHours,
+            DOM.laborPrice,
+        ];
+        var onChangeEls = [
+            DOM.bandwidthType,
+        ];
+        for (var i=0; i<onInputEls.length; i++) {
+            onInputEls[i].addEventListener("input", render);
+        }
+        for (var i=0; i<onChangeEls.length; i++) {
+            onChangeEls[i].addEventListener("change", render);
+        }
     }
 
     function render() {
