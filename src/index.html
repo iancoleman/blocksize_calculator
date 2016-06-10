@@ -139,6 +139,7 @@
                         <thead>
                             <th>Constraint</th>
                             <th>Price</th>
+                            <th>Info</th>
                             <th class="text-right">Annual Cost</th>
                         </thead>
                         <tbody>
@@ -183,6 +184,7 @@
                                         $<input class="price form-control small" value="49.99" type="number">
                                     </div>
                                 </td>
+                                <td></td>
                                 <td class="text-right">
                                     <p class="form-control-static">
                                         $<span class="total">?</span>
@@ -200,6 +202,55 @@
                                     TB drive for
                                     $<input class="price form-control small" value="114.99" type="number">
                                 </td>
+                                <td></td>
+                                <td class="text-right">
+                                    <p class="form-control-static">
+                                        $<span class="total">?</span>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr class="processing">
+                                <td>
+                                    <p class="form-control-static">
+                                        Transaction Processing
+                                    </p>
+                                </td>
+                                <td>
+                                    $<input class="price form-control small" value="1000" type="number">
+                                    lifetime cost for computer to process
+                                    <input class="rate form-control small" value="4000" type="number">
+                                    tx/s
+                                </td>
+                                <td class="popup text-center">
+                                    <p class="form-control-static">&plus;</p>
+                                    <div class="popup-content">
+                                        Total purchase and running cost for five year lifespan
+                                    </div>
+                                </td>
+                                <td class="text-right">
+                                    <p class="form-control-static">
+                                        $<span class="total">?</span>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr class="labor">
+                                <td>
+                                    <p class="form-control-static">
+                                        Labor
+                                    </p>
+                                </td>
+                                <td>
+                                    <input class="hours form-control small" value="50" type="number">
+                                    hours per year at a rate of
+                                    $<input class="price form-control small" value="100" type="number">
+                                    per hour
+                                </td>
+                                <td class="popup text-center" title="">
+                                    <p class="form-control-static">&plus;</p>
+                                    <div class="popup-content">
+                                        Including research, setup, maintenance, etc
+                                    </div>
+                                </td>
                                 <td class="text-right">
                                     <p class="form-control-static">
                                         $<span class="total">?</span>
@@ -207,10 +258,9 @@
                                 </td>
                             </tr>
                             <tr class="final">
-                                <td>
-                                </td>
-                                <td>
-                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td class="text-right">
                                     <strong>TOTAL: $<span class="total">?</span></strong>
                                     <p>per year</p>

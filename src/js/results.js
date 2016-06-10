@@ -34,6 +34,12 @@ new (function() {
     DOM.diskPrice = select(".costs .disk .price");
     DOM.diskCost = select(".costs .disk .total");
     DOM.finalTotal = select(".costs .final .total");
+    DOM.processingPrice = select(".processing .price");
+    DOM.processingRate = select(".processing .rate");
+    DOM.processingCost = select(".processing .total");
+    DOM.laborHours = select(".labor .hours");
+    DOM.laborPrice = select(".labor .price");
+    DOM.laborCost = select(".labor .total");
 
     function init() {
         DOM.size.addEventListener("input", render);
@@ -139,6 +145,18 @@ new (function() {
         var diskRatio = gigabytesPerYear / diskSize;
         var diskCost = diskPrice * diskRatio
         finalTotal += diskCost;
+        // Processing cost
+        var processingPrice = parseFloat(DOM.processingPrice.value);
+        var processingRate = parseFloat(DOM.processingRate.value);
+        var processingRatio = txsPerSecond / processingRate;
+        var yearsPerLife = 5;
+        var processingCost = processingPrice * processingRatio / yearsPerLife;
+        finalTotal += processingCost;
+        // Labor cost
+        var laborPrice = parseFloat(DOM.laborPrice.value);
+        var laborHours = parseFloat(DOM.laborHours.value);
+        var laborCost = laborPrice * laborHours;
+        finalTotal += laborCost;
         // show results
         DOM.bandwidth.textContent = megabitsPerSecond.toLocaleString();
         DOM.dataCap.textContent = gigabytesPerMonth.toLocaleString();
@@ -146,6 +164,8 @@ new (function() {
         DOM.processing.textContent = txsPerSecond.toLocaleString();
         DOM.bandwidthCost.textContent = bandwidthCost.toLocaleString();
         DOM.diskCost.textContent = diskCost.toLocaleString();
+        DOM.processingCost.textContent = processingCost.toLocaleString();
+        DOM.laborCost.textContent = laborCost.toLocaleString();
         DOM.finalTotal.textContent = finalTotal.toLocaleString();
     }
 

@@ -13,6 +13,30 @@ select.form-control {
     margin-right: 5px;
 }
 
+.complexity li {
+    line-height: 2em;
+}
+
+.popup {
+    cursor: pointer;
+    position: relative;
+}
+.popup-content {
+    display: none;
+    position: absolute;
+    background-color: #FFF;
+    border: 1px solid #999;
+    border-radius: 3px;
+    padding: 5px;
+    z-index: 1000;
+    width: 200px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.popup:hover .popup-content {
+    display: block;
+}
+
 .costs .bandwidth .options {
     display: inline-block;
 }
