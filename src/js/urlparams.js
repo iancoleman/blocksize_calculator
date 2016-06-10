@@ -6,6 +6,7 @@ new (function() {
     // Single place to track values from url and in fields
     var values = {};
     var keys = [];
+    var defaults = {};
 
     // Load page elements
     var pageElements = document.querySelectorAll("[x-url-param]");
@@ -25,6 +26,7 @@ new (function() {
                     console.warn("Duplicate id for url-param element: " + id);
                 }
                 values[id] = value;
+                defaults[id] = value;
                 elementById[id] = pageElement;
                 var onEvent = "input";
                 var tagname = pageElement.tagName.toLowerCase();
@@ -65,10 +67,15 @@ new (function() {
     function setHash() {
         var hashBits = [];
         for (var k=0; k<keys.length; k++) {
-            var key = encodeURIComponent(keys[k]);
-            var value = encodeURIComponent(values[key]);
-            var keyValueStr = key + "=" + value;
-            hashBits.push(keyValueStr);
+            var key = keys[k];
+            var value = values[key];
+            var defaultValue = defaults[key];
+            if (value != defaultValue) {
+                var safeKey = encodeURIComponent(key);
+                var safeValue = encodeURIComponent(value);
+                var keyValueStr = safeKey + "=" + safeValue;
+                hashBits.push(keyValueStr);
+            }
         }
         var hash = hashBits.join("&");
         window.location.hash = hash;
