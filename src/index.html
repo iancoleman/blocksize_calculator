@@ -290,9 +290,10 @@
                        <li>Blocks may arrive before the last one is received or processed.</li>
                        <li>Transaction backlog and mempool requirements.</li>
                        <li>Fees and the fee market, and how this affects the incentive structure for all participants of the network.</li>
-                       <li>The difference between miners and full nodes.</li>
+                       <li>The operational difference between miners and full nodes.</li>
                        <li>The impact of orphan blocks and reorgs.</li>
-                       <li>Not all transaction processing produces the same cpu load.</li>
+                       <li>The processing load of transaction is not identical for every transaction.</li>
+                       <li>The size (ie bytes) of transaction is not identical for every transaction.</li>
                        <li>The impact of SPV wallets and miners, ie varying degrees of verification.</li>
                        <li>The impact of alternative transaction techniques such as lightning network.</li>
                        <li>The impact of block propagation techniques such as invertible bloom lookup tables.</li>
@@ -301,6 +302,10 @@
                        <li>The value for max block size may be fixed or dynamic.</li>
                        <li>Frequency and magnitude of worst-case-scenarios and attacks is difficult to predict.</li>
                        <li>Factors-of-safety have not been considered.</li>
+                       <li>Willingness of participants to upgrade or not due to changes to max block size.</li>
+                       <li>Participants may be gained or lost due to changes to the max block size.</li>
+                       <li>Impact of changes to the max block size on the bitcoin market such as price, trading volume, liquidity, perception etc.</li>
+                       <li>Impact of cryptographic changes that may affect the information density per block.</li>
                    </ul>
                    <p>Without a full understanding of these complexities, there may be risk to changing the bitcoin max block size.</p>
                </div>
