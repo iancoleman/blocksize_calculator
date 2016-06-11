@@ -7,6 +7,7 @@ new (function() {
 
     var oneDay = 60*60*24;
     var oneYear = oneDay*365;
+    var daysPerMonth = 365/12;
 
     var DOM = {};
     // Parameters
@@ -78,6 +79,8 @@ new (function() {
         ];
         var onChangeEls = [
             DOM.bandwidthType,
+            DOM.cappedTime,
+            DOM.unlimitedTime,
         ];
         for (var i=0; i<onInputEls.length; i++) {
             onInputEls[i].addEventListener("input", render);
@@ -154,7 +157,7 @@ new (function() {
             var timeUnits = parseFloat(DOM.cappedTime.value);
             var unitsEachDay = oneDay / timeUnits;
             var availableEachDay = unitsEachDay * availableSize;
-            var availableEachMonth = availableEachDay * 31;
+            var availableEachMonth = availableEachDay * daysPerMonth;
             // if impossible, show error
             if (availableEachMonth < gigabytesPerMonth) {
                 DOM.bandwidthCostRow.classList.add("impossible");
