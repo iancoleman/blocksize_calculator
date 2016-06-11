@@ -23,6 +23,8 @@ new (function() {
     DOM.bandwidthCostRow = select(".costs .bandwidth");
     DOM.bandwidthErrorMsg = select(".costs .bandwidth .error");
     DOM.bandwidthType = select(".costs .bandwidth .type");
+    DOM.bandwidthCostPercent = select(".costs .bandwidth .percent .value");
+    DOM.bandwidthCostBar = select(".costs .bandwidth .bar");
     DOM.unlimited = select(".costs .unlimited");
     DOM.unlimitedPrice = select(".costs .unlimited .price");
     DOM.unlimitedTime = select(".costs .unlimited .time");
@@ -35,15 +37,21 @@ new (function() {
     DOM.diskSize = select(".costs .disk .size");
     DOM.diskPrice = select(".costs .disk .price");
     DOM.diskCost = select(".costs .disk .total");
+    DOM.diskCostPercent = select(".costs .disk .percent .value");
+    DOM.diskCostBar = select(".costs .disk .bar");
     DOM.finalTotal = select(".costs .final .total");
     DOM.processingCostRow = select(".costs .processing");
     DOM.processingErrorMsg = select(".costs .processing .error");
     DOM.processingPrice = select(".processing .price");
     DOM.processingRate = select(".processing .rate");
     DOM.processingCost = select(".processing .total");
+    DOM.processingCostPercent = select(".costs .processing .percent .value");
+    DOM.processingCostBar = select(".costs .processing .bar");
     DOM.laborHours = select(".labor .hours");
     DOM.laborPrice = select(".labor .price");
     DOM.laborCost = select(".labor .total");
+    DOM.laborCostPercent = select(".costs .labor .percent .value");
+    DOM.laborCostBar = select(".costs .labor .bar");
 
     function init() {
         setEvents();
@@ -199,6 +207,24 @@ new (function() {
         DOM.processingCost.textContent = processingCost.toLocaleString();
         DOM.laborCost.textContent = laborCost.toLocaleString();
         DOM.finalTotal.textContent = finalTotal.toLocaleString();
+        // Show bars
+        var largestCost = Math.max(bandwidthCost, processingCost, diskCost, laborCost);
+        var bandwidthBarSize = Math.round(bandwidthCost / largestCost * 100) + "%";
+        var bandwidthPercent = Math.round(bandwidthCost / finalTotal * 100) + "%";
+        DOM.bandwidthCostPercent.textContent = bandwidthPercent;
+        DOM.bandwidthCostBar.style.width = bandwidthBarSize;
+        var processingBarSize = Math.round(processingCost / largestCost * 100) + "%";
+        var processingPercent = Math.round(processingCost / finalTotal * 100) + "%";
+        DOM.processingCostPercent.textContent = processingPercent;
+        DOM.processingCostBar.style.width = processingBarSize;
+        var diskBarSize = Math.round(diskCost / largestCost * 100) + "%";
+        var diskPercent = Math.round(diskCost / finalTotal * 100) + "%";
+        DOM.diskCostPercent.textContent = diskPercent;
+        DOM.diskCostBar.style.width = diskBarSize;
+        var laborBarSize = Math.round(laborCost / largestCost * 100) + "%";
+        var laborPercent = Math.round(laborCost / finalTotal * 100) + "%";
+        DOM.laborCostPercent.textContent = laborPercent;
+        DOM.laborCostBar.style.width = laborBarSize;
     }
 
     init();
