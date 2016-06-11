@@ -21,6 +21,7 @@ new (function() {
     DOM.processing = select(".results .processing");
     // Costs
     DOM.bandwidthCostRow = select(".costs .bandwidth");
+    DOM.bandwidthErrorMsg = select(".costs .bandwidth .error");
     DOM.bandwidthType = select(".costs .bandwidth .type");
     DOM.unlimited = select(".costs .unlimited");
     DOM.unlimitedPrice = select(".costs .unlimited .price");
@@ -36,6 +37,7 @@ new (function() {
     DOM.diskCost = select(".costs .disk .total");
     DOM.finalTotal = select(".costs .final .total");
     DOM.processingCostRow = select(".costs .processing");
+    DOM.processingErrorMsg = select(".costs .processing .error");
     DOM.processingPrice = select(".processing .price");
     DOM.processingRate = select(".processing .rate");
     DOM.processingCost = select(".processing .total");
@@ -122,12 +124,12 @@ new (function() {
             var availableSpeed = parseFloat(DOM.unlimitedSpeed.value);
             // if impossible, show error
             if (availableSpeed < megabitsPerSecond) {
-                // TODO show message
                 DOM.bandwidthCostRow.classList.add("impossible");
+                DOM.bandwidthErrorMsg.classList.remove("hidden");
             }
             else {
-                // TODO hide message
                 DOM.bandwidthCostRow.classList.remove("impossible");
+                DOM.bandwidthErrorMsg.classList.add("hidden");
             }
             // calculate annual cost
             var consumptionRatio = megabitsPerSecond / availableSpeed;
@@ -147,12 +149,12 @@ new (function() {
             var availableEachMonth = availableEachDay * 31;
             // if impossible, show error
             if (availableEachMonth < gigabytesPerMonth) {
-                // TODO show an appropriate message
                 DOM.bandwidthCostRow.classList.add("impossible");
+                DOM.bandwidthErrorMsg.classList.remove("hidden");
             }
             else {
-                // TODO hide appropriate message
                 DOM.bandwidthCostRow.classList.remove("impossible");
+                DOM.bandwidthErrorMsg.classList.add("hidden");
             }
             // calculate annual cost
             var consumptionRatio = gigabytesPerMonth / availableEachMonth;
@@ -170,12 +172,12 @@ new (function() {
         // Processing cost
         var processingRate = parseFloat(DOM.processingRate.value);
         if (processingRate < txsPerSecond) {
-            // TODO show a message
             DOM.processingCostRow.classList.add("impossible");
+            DOM.processingErrorMsg.classList.remove("hidden");
         }
         else {
-            // TODO show a message
             DOM.processingCostRow.classList.remove("impossible");
+            DOM.processingErrorMsg.classList.add("hidden");
         }
         var processingPrice = parseFloat(DOM.processingPrice.value);
         var processingRatio = txsPerSecond / processingRate;
