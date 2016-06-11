@@ -334,8 +334,8 @@
                        <li>Fees and the fee market, and how this affects the incentive structure for all participants of the network.</li>
                        <li>The operational difference between miners and full nodes.</li>
                        <li>The impact of orphan blocks and reorgs.</li>
-                       <li>The processing load of transaction is not identical for every transaction.</li>
-                       <li>The size (ie bytes) of transaction is not identical for every transaction.</li>
+                       <li>The processing load of transactions is not identical for every transaction.</li>
+                       <li>The size (ie bytes) of transactions is not identical for every transaction.</li>
                        <li>The impact of SPV wallets and miners, ie varying degrees of verification.</li>
                        <li>The impact of alternative transaction techniques such as lightning network.</li>
                        <li>The impact of block propagation techniques such as invertible bloom lookup tables.</li>
@@ -346,14 +346,17 @@
                        <li>Factors-of-safety have not been considered.</li>
                        <li>Willingness of participants to upgrade or not due to changes to max block size.</li>
                        <li>Participants may be gained or lost due to changes to the max block size.</li>
-                       <li>Impact of changes to the max block size on the bitcoin market such as price, trading volume, liquidity, perception etc.</li>
-                       <li>Impact of cryptographic changes that may affect the information density per block.</li>
+                       <li>Impact of changes to the max block size on the bitcoin market such as price, trading volume, liquidity, perception etc, thus affecting the incentives.</li>
+                       <li>Impact of cryptographic changes that may affect the information density per block, such as schnorr signatures.</li>
+                       <li>Impact of privacy features such as coinjoin.</li>
+                       <li>Impact of alternative block size features such as segregated witness.</li>
                        <li>Management of Unspent Transaction Outputs with larger block sizes.</li>
                        <li>The rate of future technological developments, eg Moore's Law, as it relates to bandwidth, disk space and computation speed.</li>
                        <li>The amount of parallel processing, storage and bandwidth that can be done and assosciated economic effect.</li>
                        <li>The number of peers connected to the node.</li>
                        <li>The acceptable latency of blocks when 'catching up' in a series of good luck from miners.</li>
                        <li>The effect of pruning nodes vs full nodes.</li>
+                       <li>Block timestamps are 'as-reported' by miners, and may not reflect the true time, possibly affecting the timing stats above.</li>
                    </ul>
                    <p>Without a full understanding of these complexities, there may be risk to changing the bitcoin max block size.</p>
                </div>
