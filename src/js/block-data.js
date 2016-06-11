@@ -15,10 +15,27 @@
     DOM.sizetxs = select(".stats .sizetxs");
     DOM.timing = select(".stats .timing");
     DOM.timeseries = select(".stats .timeseries");
+    DOM.largeCharts = select(".large-charts");
+    DOM.logarithmic = select(".logarithmic");
+    DOM.sizeChart = select(".chart .size");
+    DOM.txlengthChart = select(".chart .txlength");
+    DOM.timingChart = select(".chart .timing");
+    DOM.timeseriesChart = select(".chart .timeseries");
 
     function init() {
         showDataSize();
+        setEvents();
+        setChartOptions();
+    }
+
+    function setEvents() {
         DOM.loadButton.addEventListener("click", loadData);
+        DOM.largeCharts.addEventListener("change", setLargeCharts);
+        DOM.logarithmic.addEventListener("change", render);
+    }
+
+    function setChartOptions() {
+        Chart.defaults.global.animation.duration = 0;
     }
 
     function showDataSize() {
@@ -154,13 +171,13 @@
             if (monthIndex > tsMedianSize.length || i == data.length-1) {
                 // Month has ended, put past month into time series
                 thisMonthSizes.sort(function(a,b) { return a-b });
-                var medianSize = median(thisMonthSizes);
+                var medianSize = decimalPlaces(median(thisMonthSizes), 1);
                 tsMedianSize.push({ x: monthIndex, y: medianSize });
-                var meanSize = mean(thisMonthSizes);
+                var meanSize = decimalPlaces(mean(thisMonthSizes), 1);
                 tsMeanSize.push({ x: monthIndex, y: meanSize });
-                var maxSize = thisMonthSizes[thisMonthSizes.length - 1];
+                var maxSize = decimalPlaces(thisMonthSizes[thisMonthSizes.length - 1], 1);
                 tsMaxSize.push({ x: monthIndex, y: maxSize });
-                var meanTime = mean(thisMonthTimes);
+                var meanTime = decimalPlaces(mean(thisMonthTimes), 1);
                 tsMeanTime.push({ x: monthIndex, y: meanTime });
                 tsLabels.push(dateStr(prevBlock.time).substring(0,7));
                 // Reset monthly stats
@@ -208,11 +225,15 @@
                 cumTiming += timing;
             }
         }
+        // Work out the scale type
+        var scaleType = "linear";
+        if (DOM.logarithmic.checked) {
+            scaleType = "logarithmic";
+        }
         // Chart the size
-        var size = select(".chart .size");
-        size.innerHTML = "";
+        DOM.sizeChart.innerHTML = "";
         var sizeCanvas = document.createElement("canvas");
-        size.appendChild(sizeCanvas);
+        DOM.sizeChart.appendChild(sizeCanvas);
         new Chart(sizeCanvas, {
             type: 'bar',
             data: {
@@ -222,12 +243,22 @@
                     data: sizeValues,
                 }],
             },
+            options: {
+                title: {
+                    display: true,
+                    text: "Block Size",
+                },
+                scales: {
+                    yAxes: [{
+                        type: scaleType,
+                    }]
+                }
+            }
         });
         // Chart the txlength
-        var txlength = select(".chart .txlength");
-        txlength.innerHTML = "";
+        DOM.txlengthChart.innerHTML = "";
         var txlengthCanvas = document.createElement("canvas");
-        txlength.appendChild(txlengthCanvas);
+        DOM.txlengthChart.appendChild(txlengthCanvas);
         new Chart(txlengthCanvas, {
             type: 'bar',
             data: {
@@ -237,12 +268,22 @@
                     data: txlengthValues,
                 }],
             },
+            options: {
+                title: {
+                    display: true,
+                    text: "Txs Per Block",
+                },
+                scales: {
+                    yAxes: [{
+                        type: scaleType,
+                    }]
+                }
+            }
         });
         // Chart the timing
-        var timing = select(".chart .timing");
-        timing.innerHTML = "";
+        DOM.timingChart.innerHTML = "";
         var timingCanvas = document.createElement("canvas");
-        timing.appendChild(timingCanvas);
+        DOM.timingChart.appendChild(timingCanvas);
         var size = new Chart(timingCanvas, {
             type: 'bar',
             data: {
@@ -252,12 +293,22 @@
                     data: timingValues,
                 }],
             },
+            options: {
+                title: {
+                    display: true,
+                    text: "Time Between Blocks",
+                },
+                scales: {
+                    yAxes: [{
+                        type: scaleType,
+                    }]
+                }
+            }
         });
         // Chart the time series
-        var timeseries = select(".chart .timeseries");
-        timeseries.innerHTML = "";
+        DOM.timeseriesChart.innerHTML = "";
         var timeseriesCanvas = document.createElement("canvas");
-        timeseries.appendChild(timeseriesCanvas);
+        DOM.timeseriesChart.appendChild(timeseriesCanvas);
         var maxSizeColor = "#D62728";
         var meanSizeColor = "#FF7F0E";
         var medianSizeColor = "#2CA02C";
@@ -278,7 +329,7 @@
                         pointRadius: 1,
                     },
                     {
-                        label: 'Mean Size',
+                        label: 'Avg Size',
                         data: tsMeanSize,
                         fill: false,
                         borderColor: meanSizeColor,
@@ -298,7 +349,7 @@
                         pointRadius: 1,
                     },
                     {
-                        label: 'Mean Time',
+                        label: 'Avg Time',
                         data: tsMeanTime,
                         fill: false,
                         borderColor: meanTimeColor,
@@ -310,9 +361,13 @@
                 ],
             },
             options: {
+                title: {
+                    display: true,
+                    text: "Block History",
+                },
                 scales: {
                     yAxes: [{
-                        type: 'linear',
+                        type: scaleType,
                     }]
                 }
             }
@@ -325,6 +380,26 @@
         DOM.sizekb.textContent = avgSizekb;
         DOM.sizetxs.textContent = avgSizetxs;
         DOM.timing.textContent = avgTiming;
+    }
+
+    function setLargeCharts() {
+        var charts = [
+            DOM.sizeChart,
+            DOM.txlengthChart,
+            DOM.timingChart,
+            DOM.timeseriesChart,
+        ]
+        for (var i=0; i<charts.length; i++) {
+            var chart = charts[i];
+            if (DOM.largeCharts.checked) {
+                chart.classList.add("large-chart");
+                chart.classList.remove("col-md-6");
+            }
+            else {
+                chart.classList.remove("large-chart");
+                chart.classList.add("col-md-6");
+            }
+        }
     }
 
     function dateStr(unixTime) {
@@ -367,6 +442,13 @@
         else {
             return a[Math.floor(a.length / 2)]
         }
+    }
+
+    function decimalPlaces(val, places) {
+        var multiplier = Math.pow(10, places);
+        var intVal = Math.round(val * multiplier);
+        var floatVal = intVal / multiplier;
+        return floatVal;
     }
 
     init();

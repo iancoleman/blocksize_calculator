@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="css/app.css">
     </head>
     <body>
-        <div class="container">
+        <div class="container-fluid">
             <div class="about">
                 <h1>Block Size Calculator</h1>
                 <p>What is the effect of changing the bitcoin <code>MAX_BLOCK_SIZE</code>?</p>
@@ -29,6 +29,14 @@
                         <input class="start form-control medium" type="date" id="start" x-url-param>
                         and
                         <input class="end form-control medium" type="date" id="end" x-url-param>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="large-charts">
+                            Large charts
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="logarithmic">
+                            Logarithmic Scale
+                        </label>
                     </div>
                     <div class="stats">
                         <strong><span class="blocks">1053</span></strong>

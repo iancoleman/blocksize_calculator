@@ -87,6 +87,10 @@ code {
     background-color: #B5B7F1;
 }
 
+.large-chart {
+    width: 100%;
+}
+
 /* http://stackoverflow.com/a/22559163 */
 input[type='number'] {
     -moz-appearance:textfield;
