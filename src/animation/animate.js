@@ -3,7 +3,6 @@ var monthSelector = document.getElementById("month");
 
 var blocks = [];
 var monthlyHistograms = [];
-var largestHistogramBarSize = 0;
 var firstMonth = 0;
 
 Chart.defaults.global.animation.duration = 0;
@@ -18,7 +17,8 @@ function dateStr(d) {
 
 function showMonth(monthIndex) {
     var histogram = monthlyHistograms[monthIndex];
-    var bins = histogram.datasets[0].data;
+    var dataset = histogram.datasets[0];
+    var bins = dataset.data;
     // Calculate title - month
     var year = Math.floor(firstMonth / 12);
     var monthStr = dateStr(new Date(year, monthIndex + 1));
@@ -27,13 +27,24 @@ function showMonth(monthIndex) {
     for (var i=0; i<bins.length; i++) {
         totalBlocks += bins[i];
     }
+    // Normalize data
+    var normHistogram = {};
+    normHistogram.labels = histogram.labels;
+    normHistogram.datasets = [{
+        label: dataset.label,
+    }];
+    var normBins = [];
+    for (var i=0; i<bins.length; i++) {
+        normBins.push(Math.round(bins[i] / totalBlocks * 100));
+    }
+    normHistogram.datasets[0].data = normBins;
     // Clear old graph
     chart.innerHTML = "";
     var canvas = document.createElement("canvas");
     chart.appendChild(canvas);
     new Chart(canvas, {
         type: 'bar',
-        data: histogram,
+        data: normHistogram,
         options: {
             title: {
                 display: true,
@@ -43,7 +54,7 @@ function showMonth(monthIndex) {
                 yAxes: [{
                     ticks: {
                         min: 0,
-                        max: largestHistogramBarSize,
+                        max: 100,
                     },
                 }],
             },
@@ -84,7 +95,7 @@ function toHistogram(a) {
     var response = {
         labels: labels,
         datasets: [{
-            label: "Blocks of this size",
+            label: "% of blocks",
             data: bins,
         }],
     };
@@ -129,20 +140,11 @@ Papa.parse("../data/blocks.csv", {
                 // Create histogram
                 var monthlyHistogram = toHistogram(thisMonthSizes);
                 monthlyHistograms.push(monthlyHistogram);
-                // Track important values
-                var bins = monthlyHistogram.datasets[0].data;
-                var maxBarSize = Math.max.apply(Math, bins);
-                if (maxBarSize > largestHistogramBarSize) {
-                    largestHistogramBarSize = maxBarSize;
-                }
                 // reset monthly sizes
                 thisMonthSizes = [];
             }
             thisMonthSizes.push(block.size / 1000);
         }
-        // Set y scale to be consistent for all charts
-        var exp = Math.pow(10, Math.floor(Math.log10(largestHistogramBarSize)));
-        largestHistogramBarSize = Math.ceil(largestHistogramBarSize / exp) * exp;
         // Chart first month
         showMonth(0);
         // Set slider
