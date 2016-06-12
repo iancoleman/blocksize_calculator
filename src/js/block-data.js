@@ -158,8 +158,8 @@
         var cumSizetxs = 0;
         var cumTiming = 0;
         // Parse the data
-        var start = new Date(DOM.start.value).getTime() / 1000;
-        var end = new Date(DOM.end.value).getTime() / 1000;
+        var start = new Date(DOM.start.value + "T00:00:00+0000").getTime() / 1000;
+        var end = new Date(DOM.end.value + "T00:00:00+0000").getTime() / 1000;
         var firstDate = new Date(data[0].time * 1000);
         var firstMonth = monthForDate(firstDate);
         for (var i=0; i<data.length; i++) {
@@ -419,7 +419,7 @@
     }
 
     function monthForDate(d) {
-        return d.getYear() * 12 + d.getMonth();
+        return d.getUTCFullYear() * 12 + d.getUTCMonth();
     }
 
     function mean(a) {
