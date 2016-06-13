@@ -204,4 +204,48 @@ function dateStr(d) {
     return d.toISOString().substring(0, 7);
 }
 
+function test() {
+    // Helpers
+    var tests = 0;
+    var failures = 0;
+    function test(name, cond) { if(!cond) { fail(name) } tests++ }
+    function fail(name) { console.log("FAIL: " + name); failures++; }
+    // TESTS:
+    // monthForDate
+    test(
+        "monthForDate value",
+        monthForDate(new Date(2000,1)) == 24000
+    )
+    test(
+        "monthForDate diff",
+        monthForDate(new Date(2000,2)) - monthForDate(new Date(2000,1)) == 1
+    )
+    // dateStr
+    test(
+        "dateStr UTC",
+        dateStr(new Date("2000-01-01 00:00:00.000+0000")) == "2000-01"
+    )
+    test(
+        "dateStr not UTC",
+        dateStr(new Date("2000-01-01 00:00:00.000+1000")) == "1999-12"
+    )
+    // toBinData
+    test(
+        "toBinData",
+        (function() {
+            var d = toBinData([1,1,1], 0, 2, 1);
+            var pass = true;
+            pass = pass && d.bins[0] == 0;
+            pass = pass && d.bins[1] == 3;
+            pass = pass && d.bins[2] == 0;
+            pass = pass && d.labels[0] == "< 1";
+            pass = pass && d.labels[1] == "1 - 2";
+            pass = pass && d.labels[2] == "2+";
+            return pass;
+        })()
+    )
+    // Log results
+    console.log(tests + " tests complete, " + failures + " failures");
+}
+
 init();
