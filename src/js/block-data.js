@@ -424,6 +424,9 @@
 
     function mean(a) {
         var total = 0;
+        if (a.length == 0) {
+            return 0;
+        }
         for (var i=0; i<a.length; i++) {
             total += a[i];
         }
