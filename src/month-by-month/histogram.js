@@ -1,3 +1,7 @@
+var loadBtn = document.getElementById("loadBtn");
+var size = document.getElementById("size");
+var loading = document.getElementById("loading");
+var loaded = document.getElementById("loaded");
 var chart = document.getElementById("chart");
 var monthSelector = document.getElementById("month");
 
@@ -5,14 +9,92 @@ var blocks = [];
 var monthlyHistograms = [];
 var firstMonth = 0;
 
-Chart.defaults.global.animation.duration = 0;
-
-function monthForDate(d) {
-    return (d.getUTCFullYear()) * 12 + d.getUTCMonth();
+function init() {
+    // Events
+    loadBtn.addEventListener("click", loadData);
+    // Chart defaults
+    Chart.defaults.global.animation.duration = 0;
+    // Show file size
+    showSize();
 }
 
-function dateStr(d) {
-    return d.toISOString().substring(0, 7);
+function loadData() {
+    // Show loading
+    load.classList.add("hidden");
+    loading.classList.remove("hidden");
+    // Load the data
+    Papa.parse("../data/blocks.csv", {
+        download: true,
+        complete: function(result) {
+            if (result.errors.length > 0) {
+                // TODO report error
+                return;
+            }
+            // Parse csv data into array of block objects
+            var rows = result.data;
+            var columnNames = rows[0];
+            for (var i=1; i<rows.length; i++) {
+                var cells = rows[i];
+                if (cells.length != 4) {
+                    continue;
+                }
+                var block = {};
+                for (var j=0; j<columnNames.length; j++) {
+                    var key = columnNames[j];
+                    var value = parseFloat(cells[j]);
+                    if (key == "time") {
+                        value = new Date(value * 1000);
+                    }
+                    block[key] = value;
+                }
+                blocks.push(block);
+            }
+            // Parse blocks into monthly bins
+            firstMonth = monthForDate(blocks[0].time);
+            var thisMonthSizes = [];
+            for (var i=0; i<blocks.length; i++) {
+                var block = blocks[i];
+                var thisMonth = monthForDate(block.time);
+                var monthIndex = thisMonth - firstMonth;
+                if (monthIndex > monthlyHistograms.length) {
+                    // Create histogram
+                    var monthlyHistogram = toHistogram(thisMonthSizes);
+                    monthlyHistograms.push(monthlyHistogram);
+                    // reset monthly sizes
+                    thisMonthSizes = [];
+                }
+                thisMonthSizes.push(block.size / 1000);
+            }
+            // Chart first month
+            showMonth(0);
+            // Set slider
+            monthSelector.setAttribute("min", 0);
+            monthSelector.setAttribute("max", monthlyHistograms.length-1);
+            monthSelector.addEventListener("input", function() {
+                var monthIndex = parseFloat(monthSelector.value);
+                showMonth(monthIndex);
+            });
+            monthSelector.focus();
+            // Show chart
+            loading.classList.add("hidden");
+            loaded.classList.remove("hidden");
+        }
+    });
+}
+
+function showSize() {
+    var request = new XMLHttpRequest();
+    request.open("HEAD", "../data/blocks.csv", true);
+    request.onreadystatechange = function() {
+        if (request.readyState == 4) {
+            if (request.status == 200) {
+                var sizeBytes = request.getResponseHeader("Content-Length");
+                var sizeMb = (sizeBytes / 1024 / 1024).toFixed(1);
+                size.textContent = sizeMb + " MB";
+            }
+        }
+    }
+    request.send(null);
 }
 
 function showMonth(monthIndex) {
@@ -102,59 +184,12 @@ function toHistogram(a) {
     return response;
 }
 
-// Load the data
-Papa.parse("../data/blocks.csv", {
-    download: true,
-    complete: function(result) {
-        if (result.errors.length > 0) {
-            // TODO report error
-            return;
-        }
-        // Parse csv data into array of block objects
-        var rows = result.data;
-        var columnNames = rows[0];
-        for (var i=1; i<rows.length; i++) {
-            var cells = rows[i];
-            if (cells.length != 4) {
-                continue;
-            }
-            var block = {};
-            for (var j=0; j<columnNames.length; j++) {
-                var key = columnNames[j];
-                var value = parseFloat(cells[j]);
-                if (key == "time") {
-                    value = new Date(value * 1000);
-                }
-                block[key] = value;
-            }
-            blocks.push(block);
-        }
-        // Parse blocks into monthly bins
-        firstMonth = monthForDate(blocks[0].time);
-        var thisMonthSizes = [];
-        for (var i=0; i<blocks.length; i++) {
-            var block = blocks[i];
-            var thisMonth = monthForDate(block.time);
-            var monthIndex = thisMonth - firstMonth;
-            if (monthIndex > monthlyHistograms.length) {
-                // Create histogram
-                var monthlyHistogram = toHistogram(thisMonthSizes);
-                monthlyHistograms.push(monthlyHistogram);
-                // reset monthly sizes
-                thisMonthSizes = [];
-            }
-            thisMonthSizes.push(block.size / 1000);
-        }
-        // Chart first month
-        showMonth(0);
-        // Set slider
-        monthSelector.setAttribute("min", 0);
-        monthSelector.setAttribute("max", monthlyHistograms.length-1);
-        monthSelector.style.display = "block";
-        monthSelector.addEventListener("input", function() {
-            var monthIndex = parseFloat(monthSelector.value);
-            showMonth(monthIndex);
-        });
-        monthSelector.focus();
-    }
-});
+function monthForDate(d) {
+    return (d.getUTCFullYear()) * 12 + d.getUTCMonth();
+}
+
+function dateStr(d) {
+    return d.toISOString().substring(0, 7);
+}
+
+init();
