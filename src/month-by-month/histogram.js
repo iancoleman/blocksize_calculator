@@ -78,10 +78,10 @@ function loadData() {
                 var monthIndex = parseFloat(monthSelector.value);
                 showMonth(monthIndex);
             });
-            monthSelector.focus();
             // Show chart
             loading.classList.add("hidden");
             loaded.classList.remove("hidden");
+            monthSelector.focus();
         }
     });
 }
