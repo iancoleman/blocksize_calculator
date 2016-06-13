@@ -150,7 +150,7 @@ function toBinData(a, min, max, step) {
             p = min;
         }
         // Put in bin
-        var binIndex = Math.round(((p - min) / range) * (bins.length-1));
+        var binIndex = Math.floor(((p - min) / range) * (bins.length-1));
         bins[binIndex] += 1;
     }
     return {

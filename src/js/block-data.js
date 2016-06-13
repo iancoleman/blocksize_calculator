@@ -199,7 +199,7 @@
             totalBlocks += 1;
             // Size
             var sizekb = block.size / 1000;
-            var sizeBucket = Math.round(sizekb / sizeStep);
+            var sizeBucket = Math.floor(sizekb / sizeStep);
             sizeValues[sizeBucket] += 1;
             cumSizekb += sizekb;
             // Txlength
@@ -207,7 +207,7 @@
             if (txlength > maxTxlength) {
                 txlength = maxTxlength;
             }
-            var txlengthBucket = Math.round(txlength / txlengthStep);
+            var txlengthBucket = Math.floor(txlength / txlengthStep);
             txlengthValues[txlengthBucket] += 1;
             cumSizetxs += txlength;
             // Timing
@@ -220,7 +220,7 @@
                 if (timing < minTiming) {
                     timing = minTiming;
                 }
-                var timingBucket = Math.round((timing - minTiming) / timingStep);
+                var timingBucket = Math.floor((timing - minTiming) / timingStep);
                 timingValues[timingBucket] += 1;
                 cumTiming += timing;
             }
