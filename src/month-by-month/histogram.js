@@ -50,6 +50,9 @@ function loadData() {
                 blocks.push(block);
             }
             // Parse blocks into monthly bins
+            var min = -100;
+            var max = 1200;
+            var step = 100;
             firstMonth = monthForDate(blocks[0].time);
             var thisMonthSizes = [];
             for (var i=0; i<blocks.length; i++) {
@@ -58,8 +61,9 @@ function loadData() {
                 var monthIndex = thisMonth - firstMonth;
                 if (monthIndex > monthlyHistograms.length) {
                     // Create histogram
-                    var monthlyHistogram = toHistogram(thisMonthSizes);
-                    monthlyHistograms.push(monthlyHistogram);
+                    var bins = toBinData(thisMonthSizes, min, max, step);
+                    var chartData = binsToChart(bins, monthIndex);
+                    monthlyHistograms.push(chartData);
                     // reset monthly sizes
                     thisMonthSizes = [];
                 }
@@ -99,38 +103,17 @@ function showSize() {
 
 function showMonth(monthIndex) {
     var histogram = monthlyHistograms[monthIndex];
-    var dataset = histogram.datasets[0];
-    var bins = dataset.data;
-    // Calculate title - month
-    var year = Math.floor(firstMonth / 12);
-    var monthStr = dateStr(new Date(year, monthIndex + 1));
-    // Calculate title - blocks
-    var totalBlocks = 0;
-    for (var i=0; i<bins.length; i++) {
-        totalBlocks += bins[i];
-    }
-    // Normalize data
-    var normHistogram = {};
-    normHistogram.labels = histogram.labels;
-    normHistogram.datasets = [{
-        label: dataset.label,
-    }];
-    var normBins = [];
-    for (var i=0; i<bins.length; i++) {
-        normBins.push(Math.round(bins[i] / totalBlocks * 100));
-    }
-    normHistogram.datasets[0].data = normBins;
     // Clear old graph
     chart.innerHTML = "";
     var canvas = document.createElement("canvas");
     chart.appendChild(canvas);
     new Chart(canvas, {
         type: 'bar',
-        data: normHistogram,
+        data: histogram.normalized,
         options: {
             title: {
                 display: true,
-                text: "Block Size - " + monthStr + " - " + totalBlocks + " blocks",
+                text: histogram.title,
             },
             scales: {
                 yAxes: [{
@@ -144,21 +127,18 @@ function showMonth(monthIndex) {
     });
 }
 
-function toHistogram(a) {
-    var min = -100;
-    var max = 1200;
+function toBinData(a, min, max, step) {
     var range = max - min;
-    var step = 100;
     var bins = [];
     var labels = [];
     // Generate bins
     for (var i=min; i<=max; i+=step) {
-        var label = i + " - " + (i+step) + " KB";
+        var label = i + " - " + (i+step);
         labels.push(label);
         bins.push(0);
     }
     labels[0] = "< " + (min+step);
-    labels[labels.length-1] = max + "+ KB";
+    labels[labels.length-1] = max + "+";
     // Populate bins
     for (var i=0; i<a.length; i++) {
         // Validate value
@@ -173,13 +153,45 @@ function toHistogram(a) {
         var binIndex = Math.round(((p - min) / range) * (bins.length-1));
         bins[binIndex] += 1;
     }
+    return {
+        bins: bins,
+        labels: labels,
+    };
+}
+
+function binsToChart(binData, monthIndex) {
+    var bins = binData.bins;
+    var labels = binData.labels;
+    // Calculate title - month
+    var year = Math.floor(firstMonth / 12);
+    var monthStr = dateStr(new Date(year, monthIndex + 1));
+    // Calculate title - blocks
+    var totalBlocks = 0;
+    for (var i=0; i<bins.length; i++) {
+        totalBlocks += bins[i];
+    }
+    // Normalize data
+    var normBins = [];
+    for (var i=0; i<bins.length; i++) {
+        normBins.push(Math.round(bins[i] / totalBlocks * 100));
+    }
     // Return chartable format
     var response = {
-        labels: labels,
-        datasets: [{
-            label: "% of blocks",
-            data: bins,
-        }],
+        title: "Block Size (KB) - " + monthStr + " - " + totalBlocks + " blocks",
+        raw: {
+            labels: labels,
+            datasets: [{
+                label: "% of blocks",
+                data: bins,
+            }],
+        },
+        normalized: {
+            labels: labels,
+            datasets: [{
+                label: "% of blocks",
+                data: normBins,
+            }],
+        },
     };
     return response;
 }
