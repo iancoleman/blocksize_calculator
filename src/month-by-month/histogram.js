@@ -173,7 +173,7 @@ function binsToChart(binData, monthIndex) {
     // Normalize data
     var normBins = [];
     for (var i=0; i<bins.length; i++) {
-        normBins.push(Math.round(bins[i] / totalBlocks * 100));
+        normBins.push(Math.round(bins[i] / totalBlocks * 1000)/10);
     }
     // Return chartable format
     var response = {
