@@ -175,6 +175,8 @@ function binsToChart(binData, monthIndex) {
     for (var i=0; i<bins.length; i++) {
         normBins.push(Math.round(bins[i] / totalBlocks * 1000)/10);
     }
+    // Set global chart parameters
+    var barColor = "#777";
     // Return chartable format
     var response = {
         title: "Block Size (KB) - " + monthStr + " - " + totalBlocks + " blocks",
@@ -183,6 +185,10 @@ function binsToChart(binData, monthIndex) {
             datasets: [{
                 label: "% of blocks",
                 data: bins,
+                borderColor: barColor,
+                pointBorderColor: barColor,
+                pointBackgroundColor: barColor,
+                backgroundColor: barColor,
             }],
         },
         normalized: {
@@ -190,6 +196,10 @@ function binsToChart(binData, monthIndex) {
             datasets: [{
                 label: "% of blocks",
                 data: normBins,
+                borderColor: barColor,
+                pointBorderColor: barColor,
+                pointBackgroundColor: barColor,
+                backgroundColor: barColor,
             }],
         },
     };

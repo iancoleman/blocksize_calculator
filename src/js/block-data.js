@@ -230,6 +230,8 @@
         if (DOM.logarithmic.checked) {
             scaleType = "logarithmic";
         }
+        // Set global chart parameters
+        var barColor = "#777";
         // Chart the size
         DOM.sizeChart.innerHTML = "";
         var sizeCanvas = document.createElement("canvas");
@@ -241,6 +243,10 @@
                 datasets: [{
                     label: 'Blocks of this size',
                     data: sizeValues,
+                    borderColor: barColor,
+                    pointBorderColor: barColor,
+                    pointBackgroundColor: barColor,
+                    backgroundColor: barColor,
                 }],
             },
             options: {
@@ -266,6 +272,10 @@
                 datasets: [{
                     label: 'Blocks with this many txs',
                     data: txlengthValues,
+                    borderColor: barColor,
+                    pointBorderColor: barColor,
+                    pointBackgroundColor: barColor,
+                    backgroundColor: barColor,
                 }],
             },
             options: {
@@ -291,6 +301,10 @@
                 datasets: [{
                     label: 'Blocks this far apart',
                     data: timingValues,
+                    borderColor: barColor,
+                    pointBorderColor: barColor,
+                    pointBackgroundColor: barColor,
+                    backgroundColor: barColor,
                 }],
             },
             options: {
