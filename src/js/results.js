@@ -15,6 +15,7 @@ new (function() {
     DOM.blocks = select(".parameters .blocks");
     DOM.blockGrammar = select(".parameters .block-grammar");
     DOM.time = select(".parameters .time");
+    DOM.peers = select(".parameters .peers");
     // Results
     DOM.bandwidth = select(".results .bandwidth");
     DOM.dataCap = select(".results .data-cap");
@@ -76,6 +77,7 @@ new (function() {
             DOM.processingRate,
             DOM.laborHours,
             DOM.laborPrice,
+            DOM.peers,
         ];
         var onChangeEls = [
             DOM.bandwidthType,
@@ -95,6 +97,7 @@ new (function() {
         var size = parseFloat(DOM.size.value);
         var blocks = parseFloat(DOM.blocks.value);
         var time = parseFloat(DOM.time.value);
+        var peers = parseFloat(DOM.peers.value);
         // grammar
         if (blocks == 1) {
             DOM.blockGrammar.textContent = "block";
@@ -107,7 +110,9 @@ new (function() {
         // bandwidth
         var megabitsPerBlock = size * 8;
         var blocksPerSecond = blocks / time;
-        var megabitsPerSecond = megabitsPerBlock * blocksPerSecond;
+        var megabitsPerSecondDown = megabitsPerBlock * blocksPerSecond;
+        var megabitsPerSecondUp = megabitsPerBlock * blocksPerSecond * (peers - 1);
+        var megabitsPerSecond = megabitsPerSecondUp + megabitsPerSecondDown;
         // data cap
         var secondsPerMonth = 60*60*24*31;
         var megabitsPerMonth = megabitsPerSecond * secondsPerMonth;
