@@ -97,7 +97,7 @@ new (function() {
 
     function render() {
         // parameters
-        var size = parseFloat(DOM.size.value);
+        var megabytesPerBlock = parseFloat(DOM.size.value);
         var blocks = parseFloat(DOM.blocks.value);
         var time = parseFloat(DOM.time.value);
         var peers = parseFloat(DOM.peers.value);
@@ -111,7 +111,7 @@ new (function() {
         // calculations
         // results
         // bandwidth
-        var megabitsPerBlock = size * 8;
+        var megabitsPerBlock = megabytesPerBlock * 8;
         var blocksPerSecond = blocks / time;
         var megabitsPerSecondDown = megabitsPerBlock * blocksPerSecond;
         var megabitsPerSecondUp = megabitsPerBlock * blocksPerSecond * (peers - 1);
@@ -126,7 +126,7 @@ new (function() {
         var gigabytesPerYear = megabitsPerYear / 8 / 1000;
         // processing
         var minTxSize = 226; // bytes
-        var bytesPerBlock = size * 1000 * 1000;
+        var bytesPerBlock = megabytesPerBlock * 1000 * 1000;
         var txsPerBlock = bytesPerBlock / minTxSize;
         var txsPerSecond = txsPerBlock * blocksPerSecond;
         // costs
