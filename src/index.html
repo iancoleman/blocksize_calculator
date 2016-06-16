@@ -222,8 +222,25 @@
                                         <input class="speed form-control small" value="100" type="number" id="unlimited-speed" x-url-param>
                                         Mbps
                                     </div>
-                                    with a stale block rate of
-                                    <span class="stale-rate">?</span>%
+                                    <ul>
+                                        <li>
+                                            1 in
+                                            <span class="overlap-rate">?</span>
+                                            blocks will be overlapping, which is once every
+                                            <span class="overlap-time">?</span>
+                                            days.
+                                        </li>
+                                        <li>
+                                            Hops take
+                                            <span class="hop-time">?</span>
+                                            seconds each.
+                                        </li>
+                                        <li>
+                                            Blocks take
+                                            <span class="propagate-time">?</span>
+                                            seconds to fully propagate across the entire network.
+                                        </li>
+                                    </ul>
                                 </td>
                                 <td class="popup text-center" title="">
                                     <p class="form-control-static">&plus;</p>

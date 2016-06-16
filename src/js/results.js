@@ -41,7 +41,10 @@ new (function() {
     DOM.cappedPrice = select(".costs .capped .price");
     DOM.cappedSpeed = select(".costs .capped .speed");
     DOM.bandwidthCost = select(".costs .bandwidth .total");
-    DOM.staleRate = select(".costs .stale-rate");
+    DOM.overlapRate = select(".costs .overlap-rate");
+    DOM.overlapTime = select(".costs .overlap-time");
+    DOM.hopTime = select(".costs .hop-time");
+    DOM.propagateTime = select(".costs .propagate-time");
     DOM.diskSize = select(".costs .disk .size");
     DOM.diskPrice = select(".costs .disk .price");
     DOM.diskCost = select(".costs .disk .total");
@@ -143,15 +146,15 @@ new (function() {
         var finalTotal = 0;
         var bandwidthType = DOM.bandwidthType.value;
         var bandwidthCost = 0;
-        var staleRate = 0;
+        var availableSpeed = 0;
         // bandwidth cost options
         DOM.unlimited.classList.add("hidden");
         DOM.capped.classList.add("hidden");
         if (bandwidthType == "unlimited") {
+            availableSpeed = parseFloat(DOM.unlimitedSpeed.value);
             // show unlimited options
             DOM.unlimited.classList.remove("hidden");
             // validate numbers
-            var availableSpeed = parseFloat(DOM.unlimitedSpeed.value);
             // if impossible, show error
             if (availableSpeed < megabitsPerSecondTotal) {
                 DOM.unlimitedSpeed.classList.add("impossible");
@@ -161,9 +164,6 @@ new (function() {
                 DOM.unlimitedSpeed.classList.remove("impossible");
                 DOM.bandwidthErrorMsg.classList.add("hidden");
             }
-            // calculate stale rate
-            var secondsToGetBlock = megabitsPerBlock / availableSpeed;
-            staleRate = chanceOfNewBlock(secondsToGetBlock, time);
             // calculate annual cost
             var consumptionRatio = megabitsPerSecondTotal / availableSpeed;
             var unitPrice = parseFloat(DOM.unlimitedPrice.value);
@@ -172,6 +172,7 @@ new (function() {
             bandwidthCost = unitsEachYear * unitPrice * consumptionRatio;
         }
         else if (bandwidthType == "capped") {
+            availableSpeed = parseFloat(DOM.cappedSpeed.value);
             // show capped options
             DOM.capped.classList.remove("hidden");
             // validate numbers
@@ -180,7 +181,6 @@ new (function() {
             var unitsEachDay = oneDay / timeUnits;
             var availableEachDay = unitsEachDay * availableSize;
             var availableEachMonth = availableEachDay * daysPerMonth;
-            var availableSpeed = parseFloat(DOM.cappedSpeed.value);
             // if impossible, show error
             var impossibleSize = availableEachMonth < gigabytesPerMonth;
             var impossibleSpeed = availableSpeed < megabitsPerSecondTotal;
@@ -202,9 +202,6 @@ new (function() {
             else {
                 DOM.cappedSpeed.classList.remove("impossible");
             }
-            // calculate stale rate
-            var secondsToGetBlock = megabitsPerBlock / availableSpeed;
-            staleRate = chanceOfNewBlock(secondsToGetBlock, time);
             // calculate annual cost
             var consumptionRatio = gigabytesPerMonth / availableEachMonth;
             var unitsEachYear = oneYear / timeUnits;
@@ -212,6 +209,32 @@ new (function() {
             bandwidthCost = unitsEachYear * unitPrice * consumptionRatio;
         }
         finalTotal += bandwidthCost;
+        // Calculate overlap rate (rate blocks might overlap each other).
+        // Depends which hop the block is received.
+        // The later the hop, the longer the wait.
+        // The longer the wait, the bigger the chance of overlapping block.
+        // Work out the chance of a block arriving for each hop.
+        // Then get the average overlap rate across all hops,
+        // weighted by the number of nodes in each hop.
+        var cumRate = 0;
+        var cumWeight = 0;
+        var nodesInPastHops = 0;
+        var secondsToGetBlock = megabitsPerBlock / availableSpeed;
+        for (var h=1; h<=hops; h++) {
+            var secondsBeforeBlock = h * secondsToGetBlock;
+            var newBlockChance = chanceOfNewBlock(secondsBeforeBlock, time);
+            var nodesInThisHop = Math.pow(peers, h) - nodesInPastHops;
+            var nodesInNetwork = Math.pow(peers, hops);
+            var partOfHopChance = nodesInThisHop / nodesInNetwork;
+            var weightedChance = newBlockChance * partOfHopChance;
+            cumRate += weightedChance;
+            cumWeight += partOfHopChance;
+            nodesInPastHops += nodesInThisHop;
+        }
+        var overlapRate = cumRate / cumWeight;
+        var blocksBetweenOverlap = 1 / overlapRate;
+        var timeBetweenOverlaps = blocksBetweenOverlap * time / oneDay;
+        var propagationTime = secondsToGetBlock * hops;
         // Disk cost
         var diskPrice = parseFloat(DOM.diskPrice.value);
         var diskSize = parseFloat(DOM.diskSize.value) * 1000;
@@ -246,8 +269,10 @@ new (function() {
         DOM.dataCap.textContent = gigabytesPerMonth.toLocaleString();
         DOM.suppliedDiskCapacity.textContent = gigabytesPerYear.toLocaleString();
         DOM.processing.textContent = txsPerSecond.toLocaleString();
-        DOM.staleRate.textContent = (staleRate * 100).toFixed(1);
-        DOM.staleRate.title = (staleRate * 100).toFixed(5) + "%";
+        DOM.overlapRate.textContent = Math.round(blocksBetweenOverlap);
+        DOM.overlapTime.textContent = timeBetweenOverlaps.toLocaleString();
+        DOM.hopTime.textContent = secondsToGetBlock.toLocaleString();
+        DOM.propagateTime.textContent = propagationTime.toLocaleString();
         DOM.bandwidthCost.textContent = bandwidthCost.toLocaleString();
         DOM.diskCost.textContent = diskCost.toLocaleString();
         DOM.processingCost.textContent = processingCost.toLocaleString();
