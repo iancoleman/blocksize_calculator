@@ -35,6 +35,7 @@ new (function() {
     DOM.cappedSize = select(".costs .capped .size");
     DOM.cappedTime = select(".costs .capped .time");
     DOM.cappedPrice = select(".costs .capped .price");
+    DOM.cappedSpeed = select(".costs .capped .speed");
     DOM.bandwidthCost = select(".costs .bandwidth .total");
     DOM.diskSize = select(".costs .disk .size");
     DOM.diskPrice = select(".costs .disk .price");
@@ -71,6 +72,7 @@ new (function() {
             DOM.cappedSize,
             DOM.cappedTime,
             DOM.cappedPrice,
+            DOM.cappedSpeed,
             DOM.diskSize,
             DOM.diskPrice,
             DOM.processingPrice,
