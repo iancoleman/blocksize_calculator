@@ -78,6 +78,9 @@ new (function() {
             }
         }
         var hash = hashBits.join("&");
+        if (hash == "") {
+            hash = "_";
+        }
         window.location.hash = hash;
     }
 
