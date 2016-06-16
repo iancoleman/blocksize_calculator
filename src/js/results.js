@@ -247,6 +247,7 @@ new (function() {
         DOM.suppliedDiskCapacity.textContent = gigabytesPerYear.toLocaleString();
         DOM.processing.textContent = txsPerSecond.toLocaleString();
         DOM.orphanRate.textContent = (orphanRate * 100).toFixed(1);
+        DOM.orphanRate.title = (orphanRate * 100).toFixed(5) + "%";
         DOM.bandwidthCost.textContent = bandwidthCost.toLocaleString();
         DOM.diskCost.textContent = diskCost.toLocaleString();
         DOM.processingCost.textContent = processingCost.toLocaleString();
