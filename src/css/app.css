@@ -48,6 +48,9 @@ code {
     cursor: pointer;
     position: relative;
 }
+div.popup {
+    display: inline-block;
+}
 .popup-content {
     display: none;
     text-align: left;
