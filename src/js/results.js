@@ -116,7 +116,7 @@ new (function() {
         }
         // calculations
         // hops
-        var hops = Math.ceil(Math.log(nodes) / Math.log(peers));
+        var hops = numberOfHops(nodes, peers);
         // results
         // bandwidth - assumes full block downloaded before sending to next hop
         var megabitsPerBlock = megabytesPerBlock * 8;
@@ -277,6 +277,14 @@ new (function() {
         // https://en.bitcoin.it/wiki/Confirmation#Confirmation_Times
         // http://bitcoin.stackexchange.com/a/43592
         return 1 - Math.exp(-1*(timeSinceLastBlock / avgBlockTime));
+    }
+
+    function numberOfHops(totalNodes, connectionsPerNode) {
+        // Assuming that there are no cycles (not a good assumption).
+        // Need to account for network topology.
+        // The current algorithm used here is too optimistic.
+        // Most likely there would be more hops than this to fully propagate.
+        return Math.ceil(Math.log(totalNodes) / Math.log(connectionsPerNode));
     }
 
     init();
