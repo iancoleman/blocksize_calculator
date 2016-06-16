@@ -19,7 +19,6 @@ new (function() {
     DOM.nodes = select(".parameters .nodes");
     DOM.hops = select(".parameters .hops");
     // Results
-    DOM.bandwidthTotal = select(".results .bandwidth .total");
     DOM.bandwidthDown = select(".results .bandwidth .down");
     DOM.bandwidthUp = select(".results .bandwidth .up");
     DOM.dataCap = select(".results .data-cap");
@@ -126,7 +125,7 @@ new (function() {
         var blocksPerSecond = blocks / time;
         var megabitsPerSecondDown = megabitsPerBlock * blocksPerSecond * hops;
         var megabitsPerSecondUp = megabitsPerBlock * blocksPerSecond * (peers - 1) * hops;
-        var megabitsPerSecondTotal = megabitsPerSecondUp + megabitsPerSecondDown;
+        var megabitsPerSecondMax = Math.max(megabitsPerSecondUp, megabitsPerSecondDown);
         // data cap
         var secondsPerMonth = 60*60*24*31;
         var blocksPerMonth = secondsPerMonth * blocksPerSecond;
@@ -156,7 +155,7 @@ new (function() {
             DOM.unlimited.classList.remove("hidden");
             // validate numbers
             // if impossible, show error
-            if (availableSpeed < megabitsPerSecondTotal) {
+            if (availableSpeed < megabitsPerSecondMax) {
                 DOM.unlimitedSpeed.classList.add("impossible");
                 DOM.bandwidthErrorMsg.classList.remove("hidden");
             }
@@ -165,7 +164,7 @@ new (function() {
                 DOM.bandwidthErrorMsg.classList.add("hidden");
             }
             // calculate annual cost
-            var consumptionRatio = megabitsPerSecondTotal / availableSpeed;
+            var consumptionRatio = megabitsPerSecondMax / availableSpeed;
             var unitPrice = parseFloat(DOM.unlimitedPrice.value);
             var timeUnits = parseFloat(DOM.unlimitedTime.value);
             var unitsEachYear = oneYear / timeUnits;
@@ -183,7 +182,7 @@ new (function() {
             var availableEachMonth = availableEachDay * daysPerMonth;
             // if impossible, show error
             var impossibleSize = availableEachMonth < gigabytesPerMonth;
-            var impossibleSpeed = availableSpeed < megabitsPerSecondTotal;
+            var impossibleSpeed = availableSpeed < megabitsPerSecondMax;
             if (impossibleSize || impossibleSpeed) {
                 DOM.bandwidthErrorMsg.classList.remove("hidden");
             }
@@ -263,7 +262,6 @@ new (function() {
         finalTotal += laborCost;
         // show results
         DOM.hops.textContent = hops.toLocaleString();
-        DOM.bandwidthTotal.textContent = megabitsPerSecondTotal.toLocaleString();
         DOM.bandwidthDown.textContent = megabitsPerSecondDown.toLocaleString();
         DOM.bandwidthUp.textContent = megabitsPerSecondUp.toLocaleString();
         DOM.dataCap.textContent = gigabytesPerMonth.toLocaleString();
