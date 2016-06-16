@@ -144,11 +144,11 @@ new (function() {
             var availableSpeed = parseFloat(DOM.unlimitedSpeed.value);
             // if impossible, show error
             if (availableSpeed < megabitsPerSecond) {
-                DOM.bandwidthCostRow.classList.add("impossible");
+                DOM.unlimitedSpeed.classList.add("impossible");
                 DOM.bandwidthErrorMsg.classList.remove("hidden");
             }
             else {
-                DOM.bandwidthCostRow.classList.remove("impossible");
+                DOM.unlimitedSpeed.classList.remove("impossible");
                 DOM.bandwidthErrorMsg.classList.add("hidden");
             }
             // calculate orphan rate
@@ -170,17 +170,29 @@ new (function() {
             var unitsEachDay = oneDay / timeUnits;
             var availableEachDay = unitsEachDay * availableSize;
             var availableEachMonth = availableEachDay * daysPerMonth;
+            var availableSpeed = parseFloat(DOM.cappedSpeed.value);
             // if impossible, show error
-            if (availableEachMonth < gigabytesPerMonth) {
-                DOM.bandwidthCostRow.classList.add("impossible");
+            var impossibleSize = availableEachMonth < gigabytesPerMonth;
+            var impossibleSpeed = availableSpeed < megabitsPerSecond;
+            if (impossibleSize || impossibleSpeed) {
                 DOM.bandwidthErrorMsg.classList.remove("hidden");
             }
             else {
-                DOM.bandwidthCostRow.classList.remove("impossible");
                 DOM.bandwidthErrorMsg.classList.add("hidden");
             }
+            if (impossibleSize) {
+                DOM.cappedSize.classList.add("impossible");
+            }
+            else {
+                DOM.cappedSize.classList.remove("impossible");
+            }
+            if (impossibleSpeed) {
+                DOM.cappedSpeed.classList.add("impossible");
+            }
+            else {
+                DOM.cappedSpeed.classList.remove("impossible");
+            }
             // calculate orphan rate
-            var availableSpeed = parseFloat(DOM.cappedSpeed.value);
             var secondsToGetBlock = megabitsPerBlock / availableSpeed;
             orphanRate = chanceOfNewBlock(secondsToGetBlock, time);
             // calculate annual cost
@@ -199,11 +211,11 @@ new (function() {
         // Processing cost
         var processingRate = parseFloat(DOM.processingRate.value);
         if (processingRate < txsPerSecond) {
-            DOM.processingCostRow.classList.add("impossible");
+            DOM.processingRate.classList.add("impossible");
             DOM.processingErrorMsg.classList.remove("hidden");
         }
         else {
-            DOM.processingCostRow.classList.remove("impossible");
+            DOM.processingRate.classList.remove("impossible");
             DOM.processingErrorMsg.classList.add("hidden");
         }
         var processingPrice = parseFloat(DOM.processingPrice.value);
