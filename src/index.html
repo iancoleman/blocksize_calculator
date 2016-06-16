@@ -73,8 +73,8 @@
                 <span class="block-grammar">block</span>
                 every
                 <input class="time form-control small" type="number" value="600" id="block-period" x-url-param>
-                seconds connected to
-                <input class="peers form-control small" type="number" value="8" id="peers" x-url-params>
+                seconds with my full node connected to
+                <input class="peers form-control small" type="number" value="8" id="peers" x-url-param>
                 peers.
             </div>
             <div>
@@ -91,7 +91,13 @@
                         <tr>
                             <td>Bandwidth</td>
                             <td>must be at least</td>
-                            <td class="bandwidth">?</td>
+                            <td class="bandwidth">
+                                <table>
+                                    <tr><td class="text-right">Total: </td><td class="total">?</td></tr>
+                                    <tr><td class="text-right">Down: </td><td class="down">?</td></tr>
+                                    <tr><td class="text-right">Up: </td><td class="up">?</td></tr>
+                                </table>
+                            </td>
                             <td>Mbps</td>
                         </tr>
                         <tr>
@@ -156,7 +162,7 @@
                             <th>Price</th>
                             <th>Info</th>
                             <th class="text-right">Annual Cost</th>
-                            <th>% Cost</th>
+                            <th>%&nbsp;Cost</th>
                         </thead>
                         <tbody>
                             <tr class="bandwidth">

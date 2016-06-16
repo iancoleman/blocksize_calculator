@@ -25,6 +25,10 @@ code {
     background: rgba(0,0,0,0);
 }
 
+.results .bandwidth td {
+    padding-right: 5px;
+}
+
 .impossible,
 .impossible:focus
 {
