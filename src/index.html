@@ -73,9 +73,15 @@
                 <span class="block-grammar">block</span>
                 every
                 <input class="time form-control small" type="number" value="600" id="block-period" x-url-param>
-                seconds with my full node connected to
+                seconds.
+                <br><br>
+                Each full node is connected to
                 <input class="peers form-control small" type="number" value="8" id="peers" x-url-param>
-                peers.
+                peers in a network of
+                <input class="nodes form-control small" type="number" value="4000" id="nodes" x-url-param>
+                nodes, requiring
+                <span class="hops">?</span>
+                hops to fully broadcast a block.
             </div>
             <div>
                 <h2>Constraints</h2>

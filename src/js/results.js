@@ -16,6 +16,8 @@ new (function() {
     DOM.blockGrammar = select(".parameters .block-grammar");
     DOM.time = select(".parameters .time");
     DOM.peers = select(".parameters .peers");
+    DOM.nodes = select(".parameters .nodes");
+    DOM.hops = select(".parameters .hops");
     // Results
     DOM.bandwidthTotal = select(".results .bandwidth .total");
     DOM.bandwidthDown = select(".results .bandwidth .down");
@@ -83,6 +85,7 @@ new (function() {
             DOM.laborHours,
             DOM.laborPrice,
             DOM.peers,
+            DOM.nodes,
         ];
         var onChangeEls = [
             DOM.bandwidthType,
@@ -103,6 +106,7 @@ new (function() {
         var blocks = parseFloat(DOM.blocks.value);
         var time = parseFloat(DOM.time.value);
         var peers = parseFloat(DOM.peers.value);
+        var nodes = parseFloat(DOM.nodes.value);
         // grammar
         if (blocks == 1) {
             DOM.blockGrammar.textContent = "block";
@@ -111,21 +115,25 @@ new (function() {
             DOM.blockGrammar.textContent = "blocks";
         }
         // calculations
+        // hops
+        var hops = Math.ceil(Math.log(nodes) / Math.log(peers));
         // results
-        // bandwidth
+        // bandwidth - assumes full block downloaded before sending to next hop
         var megabitsPerBlock = megabytesPerBlock * 8;
         var blocksPerSecond = blocks / time;
-        var megabitsPerSecondDown = megabitsPerBlock * blocksPerSecond;
-        var megabitsPerSecondUp = megabitsPerBlock * blocksPerSecond * (peers - 1);
+        var megabitsPerSecondDown = megabitsPerBlock * blocksPerSecond * hops;
+        var megabitsPerSecondUp = megabitsPerBlock * blocksPerSecond * (peers - 1) * hops;
         var megabitsPerSecondTotal = megabitsPerSecondUp + megabitsPerSecondDown;
         // data cap
         var secondsPerMonth = 60*60*24*31;
-        var megabitsPerMonthTotal = megabitsPerSecondTotal * secondsPerMonth;
-        var gigabytesPerMonthTotal = megabitsPerMonthTotal / 8 / 1000;
+        var blocksPerMonth = secondsPerMonth * blocksPerSecond;
+        var megabytesPerMonth = blocksPerMonth * megabytesPerBlock * peers;
+        var gigabytesPerMonth = megabytesPerMonth / 1000;
         // supplied disk capacity
         var secondsPerYear = 60*60*24*365;
-        var megabitsPerYearDown = megabitsPerSecondDown * secondsPerYear;
-        var gigabytesPerYearDown = megabitsPerYearDown / 8 / 1000;
+        var blocksPerYear = secondsPerYear * blocksPerSecond;
+        var megabytesPerYear = blocksPerYear * megabytesPerBlock;
+        var gigabytesPerYear = megabytesPerYear / 1000;
         // processing
         var minTxSize = 226; // bytes
         var bytesPerBlock = megabytesPerBlock * 1000 * 1000;
@@ -174,7 +182,7 @@ new (function() {
             var availableEachMonth = availableEachDay * daysPerMonth;
             var availableSpeed = parseFloat(DOM.cappedSpeed.value);
             // if impossible, show error
-            var impossibleSize = availableEachMonth < gigabytesPerMonthTotal;
+            var impossibleSize = availableEachMonth < gigabytesPerMonth;
             var impossibleSpeed = availableSpeed < megabitsPerSecondTotal;
             if (impossibleSize || impossibleSpeed) {
                 DOM.bandwidthErrorMsg.classList.remove("hidden");
@@ -198,7 +206,7 @@ new (function() {
             var secondsToGetBlock = megabitsPerBlock / availableSpeed;
             orphanRate = chanceOfNewBlock(secondsToGetBlock, time);
             // calculate annual cost
-            var consumptionRatio = gigabytesPerMonthTotal / availableEachMonth;
+            var consumptionRatio = gigabytesPerMonth / availableEachMonth;
             var unitsEachYear = oneYear / timeUnits;
             var unitPrice = parseFloat(DOM.cappedPrice.value);
             bandwidthCost = unitsEachYear * unitPrice * consumptionRatio;
@@ -207,7 +215,7 @@ new (function() {
         // Disk cost
         var diskPrice = parseFloat(DOM.diskPrice.value);
         var diskSize = parseFloat(DOM.diskSize.value) * 1000;
-        var diskRatio = gigabytesPerYearDown / diskSize;
+        var diskRatio = gigabytesPerYear / diskSize;
         var diskCost = diskPrice * diskRatio
         finalTotal += diskCost;
         // Processing cost
@@ -231,11 +239,12 @@ new (function() {
         var laborCost = laborPrice * laborHours;
         finalTotal += laborCost;
         // show results
+        DOM.hops.textContent = hops.toLocaleString();
         DOM.bandwidthTotal.textContent = megabitsPerSecondTotal.toLocaleString();
         DOM.bandwidthDown.textContent = megabitsPerSecondDown.toLocaleString();
         DOM.bandwidthUp.textContent = megabitsPerSecondUp.toLocaleString();
-        DOM.dataCap.textContent = gigabytesPerMonthTotal.toLocaleString();
-        DOM.suppliedDiskCapacity.textContent = gigabytesPerYearDown.toLocaleString();
+        DOM.dataCap.textContent = gigabytesPerMonth.toLocaleString();
+        DOM.suppliedDiskCapacity.textContent = gigabytesPerYear.toLocaleString();
         DOM.processing.textContent = txsPerSecond.toLocaleString();
         DOM.orphanRate.textContent = (orphanRate * 100).toFixed(1);
         DOM.bandwidthCost.textContent = bandwidthCost.toLocaleString();
