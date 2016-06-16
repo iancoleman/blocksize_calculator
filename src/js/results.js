@@ -37,6 +37,7 @@ new (function() {
     DOM.cappedPrice = select(".costs .capped .price");
     DOM.cappedSpeed = select(".costs .capped .speed");
     DOM.bandwidthCost = select(".costs .bandwidth .total");
+    DOM.orphanRate = select(".costs .orphan-rate");
     DOM.diskSize = select(".costs .disk .size");
     DOM.diskPrice = select(".costs .disk .price");
     DOM.diskCost = select(".costs .disk .total");
@@ -132,6 +133,7 @@ new (function() {
         var finalTotal = 0;
         var bandwidthType = DOM.bandwidthType.value;
         var bandwidthCost = 0;
+        var orphanRate = 0;
         // bandwidth cost options
         DOM.unlimited.classList.add("hidden");
         DOM.capped.classList.add("hidden");
@@ -149,6 +151,9 @@ new (function() {
                 DOM.bandwidthCostRow.classList.remove("impossible");
                 DOM.bandwidthErrorMsg.classList.add("hidden");
             }
+            // calculate orphan rate
+            var secondsToGetBlock = megabitsPerBlock / availableSpeed;
+            orphanRate = chanceOfNewBlock(secondsToGetBlock, time);
             // calculate annual cost
             var consumptionRatio = megabitsPerSecond / availableSpeed;
             var unitPrice = parseFloat(DOM.unlimitedPrice.value);
@@ -174,6 +179,10 @@ new (function() {
                 DOM.bandwidthCostRow.classList.remove("impossible");
                 DOM.bandwidthErrorMsg.classList.add("hidden");
             }
+            // calculate orphan rate
+            var availableSpeed = parseFloat(DOM.cappedSpeed.value);
+            var secondsToGetBlock = megabitsPerBlock / availableSpeed;
+            orphanRate = chanceOfNewBlock(secondsToGetBlock, time);
             // calculate annual cost
             var consumptionRatio = gigabytesPerMonth / availableEachMonth;
             var unitsEachYear = oneYear / timeUnits;
@@ -212,6 +221,7 @@ new (function() {
         DOM.dataCap.textContent = gigabytesPerMonth.toLocaleString();
         DOM.suppliedDiskCapacity.textContent = gigabytesPerYear.toLocaleString();
         DOM.processing.textContent = txsPerSecond.toLocaleString();
+        DOM.orphanRate.textContent = (orphanRate * 100).toFixed(1);
         DOM.bandwidthCost.textContent = bandwidthCost.toLocaleString();
         DOM.diskCost.textContent = diskCost.toLocaleString();
         DOM.processingCost.textContent = processingCost.toLocaleString();
@@ -235,6 +245,13 @@ new (function() {
         var laborPercent = Math.round(laborCost / finalTotal * 100) + "%";
         DOM.laborCostPercent.textContent = laborPercent;
         DOM.laborCostBar.style.width = laborBarSize;
+    }
+
+    function chanceOfNewBlock(timeSinceLastBlock, avgBlockTime) {
+        // See
+        // https://en.bitcoin.it/wiki/Confirmation#Confirmation_Times
+        // http://bitcoin.stackexchange.com/a/43592
+        return 1 - Math.exp(-1*(timeSinceLastBlock / avgBlockTime));
     }
 
     init();
