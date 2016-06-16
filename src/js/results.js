@@ -41,7 +41,7 @@ new (function() {
     DOM.cappedPrice = select(".costs .capped .price");
     DOM.cappedSpeed = select(".costs .capped .speed");
     DOM.bandwidthCost = select(".costs .bandwidth .total");
-    DOM.orphanRate = select(".costs .orphan-rate");
+    DOM.staleRate = select(".costs .stale-rate");
     DOM.diskSize = select(".costs .disk .size");
     DOM.diskPrice = select(".costs .disk .price");
     DOM.diskCost = select(".costs .disk .total");
@@ -143,7 +143,7 @@ new (function() {
         var finalTotal = 0;
         var bandwidthType = DOM.bandwidthType.value;
         var bandwidthCost = 0;
-        var orphanRate = 0;
+        var staleRate = 0;
         // bandwidth cost options
         DOM.unlimited.classList.add("hidden");
         DOM.capped.classList.add("hidden");
@@ -161,9 +161,9 @@ new (function() {
                 DOM.unlimitedSpeed.classList.remove("impossible");
                 DOM.bandwidthErrorMsg.classList.add("hidden");
             }
-            // calculate orphan rate
+            // calculate stale rate
             var secondsToGetBlock = megabitsPerBlock / availableSpeed;
-            orphanRate = chanceOfNewBlock(secondsToGetBlock, time);
+            staleRate = chanceOfNewBlock(secondsToGetBlock, time);
             // calculate annual cost
             var consumptionRatio = megabitsPerSecondTotal / availableSpeed;
             var unitPrice = parseFloat(DOM.unlimitedPrice.value);
@@ -202,9 +202,9 @@ new (function() {
             else {
                 DOM.cappedSpeed.classList.remove("impossible");
             }
-            // calculate orphan rate
+            // calculate stale rate
             var secondsToGetBlock = megabitsPerBlock / availableSpeed;
-            orphanRate = chanceOfNewBlock(secondsToGetBlock, time);
+            staleRate = chanceOfNewBlock(secondsToGetBlock, time);
             // calculate annual cost
             var consumptionRatio = gigabytesPerMonth / availableEachMonth;
             var unitsEachYear = oneYear / timeUnits;
@@ -246,8 +246,8 @@ new (function() {
         DOM.dataCap.textContent = gigabytesPerMonth.toLocaleString();
         DOM.suppliedDiskCapacity.textContent = gigabytesPerYear.toLocaleString();
         DOM.processing.textContent = txsPerSecond.toLocaleString();
-        DOM.orphanRate.textContent = (orphanRate * 100).toFixed(1);
-        DOM.orphanRate.title = (orphanRate * 100).toFixed(5) + "%";
+        DOM.staleRate.textContent = (staleRate * 100).toFixed(1);
+        DOM.staleRate.title = (staleRate * 100).toFixed(5) + "%";
         DOM.bandwidthCost.textContent = bandwidthCost.toLocaleString();
         DOM.diskCost.textContent = diskCost.toLocaleString();
         DOM.processingCost.textContent = processingCost.toLocaleString();
