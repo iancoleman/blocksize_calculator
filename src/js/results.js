@@ -62,6 +62,9 @@ new (function() {
     DOM.laborCost = select(".labor .total");
     DOM.laborCostPercent = select(".costs .labor .percent .value");
     DOM.laborCostBar = select(".costs .labor .bar");
+    DOM.ibdSize = select(".initial-block-download .size");
+    DOM.ibdTime = select(".initial-block-download .time");
+    DOM.ibdDate = select(".initial-block-download .date");
 
     function init() {
         setEvents();
@@ -88,6 +91,7 @@ new (function() {
             DOM.laborPrice,
             DOM.peers,
             DOM.nodes,
+            DOM.ibdDate,
         ];
         var onChangeEls = [
             DOM.bandwidthType,
@@ -260,6 +264,22 @@ new (function() {
         var laborHours = parseFloat(DOM.laborHours.value);
         var laborCost = laborPrice * laborHours;
         finalTotal += laborCost;
+        // Initial block download - assumes all blocks full since start
+        var now = new Date().getTime();
+        var startOfBlockchain = new Date("2009-01-09 00:00:00").getTime();
+        var timeSinceStart = (now - startOfBlockchain) / 1000;
+        var blocksSinceStart = timeSinceStart / 600; // 600s per block
+        var existingSize = 1 * blocksSinceStart; // 1 MB
+        var futureTime = new Date(DOM.ibdDate.value).getTime();
+        var timeToFuture = (futureTime - now) / 1000
+        var blocksInFuture = timeToFuture / 600;
+        if (blocksInFuture < 0) {
+            blocksInFuture = 0;
+        }
+        var futureSize = megabytesPerBlock * blocksInFuture;
+        var ibdSize = Math.round((existingSize + futureSize) / 1024); // in GB
+        var ibdSizeMegabits = ibdSize * 1024 * 8;
+        var ibdTime = Math.round(ibdSizeMegabits / availableSpeed / 3600); // in hours
         // show results
         DOM.hops.textContent = hops.toLocaleString();
         DOM.bandwidthDown.textContent = megabitsPerSecondDown.toLocaleString();
@@ -275,6 +295,8 @@ new (function() {
         DOM.diskCost.textContent = diskCost.toLocaleString();
         DOM.processingCost.textContent = processingCost.toLocaleString();
         DOM.laborCost.textContent = laborCost.toLocaleString();
+        DOM.ibdSize.textContent = ibdSize.toLocaleString();
+        DOM.ibdTime.textContent = ibdTime.toLocaleString();
         DOM.finalTotal.textContent = finalTotal.toLocaleString();
         // Show bars
         var largestCost = Math.max(bandwidthCost, processingCost, diskCost, laborCost);
