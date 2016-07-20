@@ -3,18 +3,18 @@ processing = new (function() {
     var self = this;
 
     var DOM = {};
-    DOM.processing = select(".results .processing");
-    DOM.processingRate = select(".processing .rate");
-    DOM.processingPrice = select(".processing .price");
-    DOM.processingErrorMsg = select(".costs .processing .error");
-    DOM.processingCost = select(".processing .total");
+    DOM.processing = $(".results .processing");
+    DOM.processingRate = $(".processing .rate");
+    DOM.processingPrice = $(".processing .price");
+    DOM.processingErrorMsg = $(".costs .processing .error");
+    DOM.processingCost = $(".processing .total");
 
     function calculate() {
 
         this.cost = 0;
 
-        self.processingRate = parseFloat(DOM.processingRate.value);
-        var processingPrice = parseFloat(DOM.processingPrice.value);
+        self.processingRate = parseFloat(DOM.processingRate.val());
+        var processingPrice = parseFloat(DOM.processingPrice.val());
         var processingRatio = network.txsPerSecond / self.processingRate;
         var yearsPerLife = 5;
         self.cost = processingPrice * processingRatio / yearsPerLife;
@@ -25,15 +25,15 @@ processing = new (function() {
     function render() {
 
         if (self.processingRate < network.txsPerSecond) {
-            DOM.processingRate.classList.add("impossible");
-            DOM.processingErrorMsg.classList.remove("hidden");
+            DOM.processingRate.addClass("impossible");
+            DOM.processingErrorMsg.removeClass("hidden");
         }
         else {
-            DOM.processingRate.classList.remove("impossible");
-            DOM.processingErrorMsg.classList.add("hidden");
+            DOM.processingRate.removeClass("impossible");
+            DOM.processingErrorMsg.addClass("hidden");
         }
-        DOM.processing.textContent = network.txsPerSecond.toLocaleString();
-        DOM.processingCost.textContent = self.cost.toLocaleString();
+        DOM.processing.text(network.txsPerSecond.toLocaleString());
+        DOM.processingCost.text(self.cost.toLocaleString());
 
     }
 
@@ -47,7 +47,7 @@ processing = new (function() {
         DOM.processingRate,
     ];
     for (var i=0; i<onInputEls.length; i++) {
-        onInputEls[i].addEventListener("input", network.recalc);
+        onInputEls[i].on("input", network.recalc);
     }
 
 })();

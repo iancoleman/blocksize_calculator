@@ -3,24 +3,24 @@
     var data = [];
 
     var DOM = {};
-    DOM.loadButton = select(".load button");
-    DOM.size = select(".load .size");
-    DOM.load = select(".load");
-    DOM.loading = select(".loading");
-    DOM.charts = select(".charts");
-    DOM.start = select(".start");
-    DOM.end = select(".end");
-    DOM.blocks = select(".stats .blocks");
-    DOM.sizekb = select(".stats .sizekb");
-    DOM.sizetxs = select(".stats .sizetxs");
-    DOM.timing = select(".stats .timing");
-    DOM.timeseries = select(".stats .timeseries");
-    DOM.largeCharts = select(".large-charts");
-    DOM.logarithmic = select(".logarithmic");
-    DOM.sizeChart = select(".chart .size");
-    DOM.txlengthChart = select(".chart .txlength");
-    DOM.timingChart = select(".chart .timing");
-    DOM.timeseriesChart = select(".chart .timeseries");
+    DOM.loadButton = $(".load button");
+    DOM.size = $(".load .size");
+    DOM.load = $(".load");
+    DOM.loading = $(".loading");
+    DOM.charts = $(".charts");
+    DOM.start = $(".start");
+    DOM.end = $(".end");
+    DOM.blocks = $(".stats .blocks");
+    DOM.sizekb = $(".stats .sizekb");
+    DOM.sizetxs = $(".stats .sizetxs");
+    DOM.timing = $(".stats .timing");
+    DOM.timeseries = $(".stats .timeseries");
+    DOM.largeCharts = $(".large-charts");
+    DOM.logarithmic = $(".logarithmic");
+    DOM.sizeChart = $(".chart .size");
+    DOM.txlengthChart = $(".chart .txlength");
+    DOM.timingChart = $(".chart .timing");
+    DOM.timeseriesChart = $(".chart .timeseries");
 
     function init() {
         showDataSize();
@@ -29,9 +29,9 @@
     }
 
     function setEvents() {
-        DOM.loadButton.addEventListener("click", loadData);
-        DOM.largeCharts.addEventListener("change", setLargeCharts);
-        DOM.logarithmic.addEventListener("change", render);
+        DOM.loadButton.on("click", loadData);
+        DOM.largeCharts.on("change", setLargeCharts);
+        DOM.logarithmic.on("change", render);
     }
 
     function setChartOptions() {
@@ -46,7 +46,7 @@
                 if (request.status == 200) {
                     var sizeBytes = request.getResponseHeader("Content-Length");
                     var sizeMb = (sizeBytes / 1024 / 1024).toFixed(1);
-                    DOM.size.textContent = sizeMb + " MB";
+                    DOM.size.text(sizeMb + " MB");
                 }
             }
         }
@@ -56,9 +56,9 @@
     function loadData() {
 
         // Hide load button
-        DOM.load.classList.add("hidden");
+        DOM.load.addClass("hidden");
         // Show loading
-        DOM.loading.classList.remove("hidden");
+        DOM.loading.removeClass("hidden");
         // Load the data
         Papa.parse("data/blocks.csv", {
             download: true,
@@ -84,26 +84,26 @@
                     data.push(block);
                 }
                 // Hide loading
-                DOM.loading.classList.add("hidden");
+                DOM.loading.addClass("hidden");
                 // Show charts
-                DOM.charts.classList.remove("hidden");
+                DOM.charts.removeClass("hidden");
                 // Set min and max dates
                 var minDateStr = dateStr(data[0].time);
                 var maxDateStr = dateStr(data[data.length-1].time);
-                DOM.start.setAttribute("min", minDateStr);
-                DOM.start.setAttribute("max", maxDateStr);
-                if (DOM.start.value == "") {
-                    DOM.start.value = minDateStr;
-                    triggerEvent(DOM.start, "input");
+                DOM.start.attr("min", minDateStr);
+                DOM.start.attr("max", maxDateStr);
+                if (DOM.start.val() == "") {
+                    DOM.start.val(minDateStr);
+                    DOM.start.trigger("input");
                 }
-                DOM.start.addEventListener("input", render);
-                DOM.end.setAttribute("min", minDateStr);
-                DOM.end.setAttribute("max", maxDateStr);
-                if (DOM.end.value == "") {
-                    DOM.end.value = maxDateStr;
-                    triggerEvent(DOM.end, "input");
+                DOM.start.on("input", render);
+                DOM.end.attr("min", minDateStr);
+                DOM.end.attr("max", maxDateStr);
+                if (DOM.end.val() == "") {
+                    DOM.end.val(maxDateStr);
+                    DOM.end.trigger("input");
                 }
-                DOM.end.addEventListener("input", render);
+                DOM.end.on("input", render);
                 render();
             },
         })
@@ -158,8 +158,8 @@
         var cumSizetxs = 0;
         var cumTiming = 0;
         // Parse the data
-        var start = new Date(DOM.start.value + "T00:00:00+0000").getTime() / 1000;
-        var end = new Date(DOM.end.value + "T00:00:00+0000").getTime() / 1000;
+        var start = new Date(DOM.start.val() + "T00:00:00+0000").getTime() / 1000;
+        var end = new Date(DOM.end.val() + "T00:00:00+0000").getTime() / 1000;
         var firstDate = new Date(data[0].time * 1000);
         var firstMonth = monthForDate(firstDate);
         for (var i=0; i<data.length; i++) {
@@ -227,15 +227,15 @@
         }
         // Work out the scale type
         var scaleType = "linear";
-        if (DOM.logarithmic.checked) {
+        if (DOM.logarithmic.prop("checked")) {
             scaleType = "logarithmic";
         }
         // Set global chart parameters
         var barColor = "#777";
         // Chart the size
-        DOM.sizeChart.innerHTML = "";
+        DOM.sizeChart.empty();
         var sizeCanvas = document.createElement("canvas");
-        DOM.sizeChart.appendChild(sizeCanvas);
+        DOM.sizeChart.append(sizeCanvas);
         new Chart(sizeCanvas, {
             type: 'bar',
             data: {
@@ -262,9 +262,9 @@
             }
         });
         // Chart the txlength
-        DOM.txlengthChart.innerHTML = "";
+        DOM.txlengthChart.empty();
         var txlengthCanvas = document.createElement("canvas");
-        DOM.txlengthChart.appendChild(txlengthCanvas);
+        DOM.txlengthChart.append(txlengthCanvas);
         new Chart(txlengthCanvas, {
             type: 'bar',
             data: {
@@ -291,9 +291,9 @@
             }
         });
         // Chart the timing
-        DOM.timingChart.innerHTML = "";
+        DOM.timingChart.empty();
         var timingCanvas = document.createElement("canvas");
-        DOM.timingChart.appendChild(timingCanvas);
+        DOM.timingChart.append(timingCanvas);
         var size = new Chart(timingCanvas, {
             type: 'bar',
             data: {
@@ -320,9 +320,9 @@
             }
         });
         // Chart the time series
-        DOM.timeseriesChart.innerHTML = "";
+        DOM.timeseriesChart.empty();
         var timeseriesCanvas = document.createElement("canvas");
-        DOM.timeseriesChart.appendChild(timeseriesCanvas);
+        DOM.timeseriesChart.append(timeseriesCanvas);
         var maxSizeColor = "#D62728";
         var meanSizeColor = "#FF7F0E";
         var medianSizeColor = "#2CA02C";
@@ -390,10 +390,10 @@
         var avgSizekb = (cumSizekb / totalBlocks).toFixed(0);
         var avgSizetxs = (cumSizetxs / totalBlocks).toFixed(0);
         var avgTiming = (cumTiming / (totalBlocks - 1)).toFixed(0);
-        DOM.blocks.textContent = totalBlocks;
-        DOM.sizekb.textContent = avgSizekb;
-        DOM.sizetxs.textContent = avgSizetxs;
-        DOM.timing.textContent = avgTiming;
+        DOM.blocks.text(totalBlocks);
+        DOM.sizekb.text(avgSizekb);
+        DOM.sizetxs.text(avgSizetxs);
+        DOM.timing.text(avgTiming);
     }
 
     function setLargeCharts() {
@@ -405,13 +405,13 @@
         ]
         for (var i=0; i<charts.length; i++) {
             var chart = charts[i];
-            if (DOM.largeCharts.checked) {
-                chart.classList.add("large-chart");
-                chart.classList.remove("col-md-6");
+            if (DOM.largeCharts.prop("checked")) {
+                chart.addClass("large-chart");
+                chart.removeClass("col-md-6");
             }
             else {
-                chart.classList.remove("large-chart");
-                chart.classList.add("col-md-6");
+                chart.removeClass("large-chart");
+                chart.addClass("col-md-6");
             }
         }
     }
@@ -419,17 +419,6 @@
     function dateStr(unixTime) {
         var d = new Date(unixTime * 1000);
         return d.toISOString().substring(0, 10);
-    }
-
-    function triggerEvent(element, eventName) {
-        if ("createEvent" in document) {
-            var evt = document.createEvent("HTMLEvents");
-            evt.initEvent(eventName, false, true);
-            element.dispatchEvent(evt);
-        }
-        else {
-            element.fireEvent("on" + eventName);
-        }
     }
 
     function monthForDate(d) {

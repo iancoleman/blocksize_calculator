@@ -3,23 +3,23 @@ labor = new (function() {
     var self = this;
 
     var DOM = {};
-    DOM.laborHours = select(".labor .hours");
-    DOM.laborPrice = select(".labor .price");
-    DOM.laborCost = select(".labor .total");
+    DOM.laborHours = $(".labor .hours");
+    DOM.laborPrice = $(".labor .price");
+    DOM.laborCost = $(".labor .total");
 
     function calculate() {
 
         self.cost = 0;
 
-        var laborPrice = parseFloat(DOM.laborPrice.value);
-        var laborHours = parseFloat(DOM.laborHours.value);
+        var laborPrice = parseFloat(DOM.laborPrice.val());
+        var laborHours = parseFloat(DOM.laborHours.val());
         self.cost = laborPrice * laborHours;
         network.totalCosts += self.cost;
 
     }
 
     function render() {
-        DOM.laborCost.textContent = self.cost.toLocaleString();
+        DOM.laborCost.text(self.cost.toLocaleString());
     }
 
     network.addCalculatedListener(function() {
@@ -32,7 +32,7 @@ labor = new (function() {
         DOM.laborPrice,
     ];
     for (var i=0; i<onInputEls.length; i++) {
-        onInputEls[i].addEventListener("input", network.recalc);
+        onInputEls[i].on("input", network.recalc);
     }
 
 })();

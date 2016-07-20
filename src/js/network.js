@@ -4,35 +4,35 @@ network = new (function() {
     var self = this;
 
     var DOM = {};
-    DOM.size = select(".parameters .block-size");
-    DOM.blocks = select(".parameters .blocks");
-    DOM.time = select(".parameters .time");
-    DOM.peers = select(".parameters .peers");
-    DOM.nodes = select(".parameters .nodes");
-    DOM.hops = select(".parameters .hops");
-    DOM.blockGrammar = select(".parameters .block-grammar");
-    DOM.finalTotal = select(".costs .final .total");
+    DOM.size = $(".parameters .block-size");
+    DOM.blocks = $(".parameters .blocks");
+    DOM.time = $(".parameters .time");
+    DOM.peers = $(".parameters .peers");
+    DOM.nodes = $(".parameters .nodes");
+    DOM.hops = $(".parameters .hops");
+    DOM.blockGrammar = $(".parameters .block-grammar");
+    DOM.finalTotal = $(".costs .final .total");
 
-    DOM.bandwidthCostPercent = select(".costs .bandwidth .percent .value");
-    DOM.bandwidthCostBar = select(".costs .bandwidth .bar");
-    DOM.processingCostPercent = select(".costs .processing .percent .value");
-    DOM.processingCostBar = select(".costs .processing .bar");
-    DOM.laborCostPercent = select(".costs .labor .percent .value");
-    DOM.laborCostBar = select(".costs .labor .bar");
-    DOM.diskCostPercent = select(".costs .disk .percent .value");
-    DOM.diskCostBar = select(".costs .disk .bar");
+    DOM.bandwidthCostPercent = $(".costs .bandwidth .percent .value");
+    DOM.bandwidthCostBar = $(".costs .bandwidth .bar");
+    DOM.processingCostPercent = $(".costs .processing .percent .value");
+    DOM.processingCostBar = $(".costs .processing .bar");
+    DOM.laborCostPercent = $(".costs .labor .percent .value");
+    DOM.laborCostBar = $(".costs .labor .bar");
+    DOM.diskCostPercent = $(".costs .disk .percent .value");
+    DOM.diskCostBar = $(".costs .disk .bar");
 
     function calculate() {
 
-        self.megabytesPerBlock = parseFloat(DOM.size.value);
+        self.megabytesPerBlock = parseFloat(DOM.size.val());
 
-        self.blocksPerSecondNumerator = parseFloat(DOM.blocks.value);
+        self.blocksPerSecondNumerator = parseFloat(DOM.blocks.val());
 
-        self.blocksPerSecondDenominator = parseFloat(DOM.time.value);
+        self.blocksPerSecondDenominator = parseFloat(DOM.time.val());
 
-        self.connectedPeers = parseFloat(DOM.peers.value);
+        self.connectedPeers = parseFloat(DOM.peers.val());
 
-        self.totalNetworkNodes = parseFloat(DOM.nodes.value);
+        self.totalNetworkNodes = parseFloat(DOM.nodes.val());
 
         self.numberOfHops = numberOfHops(self.totalNetworkNodes, self.connectedPeers);
 
@@ -90,33 +90,33 @@ network = new (function() {
 
     function render() {
         if (self.blocksPerSecondNumerator == 1) {
-            DOM.blockGrammar.textContent = "block";
+            DOM.blockGrammar.text("block");
         }
         else {
-            DOM.blockGrammar.textContent = "blocks";
+            DOM.blockGrammar.text("blocks");
         }
-        DOM.hops.textContent = self.numberOfHops.toLocaleString();
+        DOM.hops.text(self.numberOfHops.toLocaleString());
 
-        DOM.finalTotal.textContent = self.totalCosts.toLocaleString();
+        DOM.finalTotal.text(self.totalCosts.toLocaleString());
 
         // Show proportionality bars on viability costs
         var largestCost = Math.max(bandwidth.cost, processing.cost, disk.cost, labor.cost);
         var bandwidthBarSize = Math.round(bandwidth.cost / largestCost * 100) + "%";
         var bandwidthPercent = Math.round(bandwidth.cost / self.totalCosts * 100) + "%";
-        DOM.bandwidthCostPercent.textContent = bandwidthPercent;
-        DOM.bandwidthCostBar.style.width = bandwidthBarSize;
+        DOM.bandwidthCostPercent.text(bandwidthPercent);
+        DOM.bandwidthCostBar.css("width", bandwidthBarSize);
         var processingBarSize = Math.round(processing.cost / largestCost * 100) + "%";
         var processingPercent = Math.round(processing.cost / self.totalCosts * 100) + "%";
-        DOM.processingCostPercent.textContent = processingPercent;
-        DOM.processingCostBar.style.width = processingBarSize;
+        DOM.processingCostPercent.text(processingPercent);
+        DOM.processingCostBar.css("width", processingBarSize);
         var diskBarSize = Math.round(disk.cost / largestCost * 100) + "%";
         var diskPercent = Math.round(disk.cost / self.totalCosts * 100) + "%";
-        DOM.diskCostPercent.textContent = diskPercent;
-        DOM.diskCostBar.style.width = diskBarSize;
+        DOM.diskCostPercent.text(diskPercent);
+        DOM.diskCostBar.css("width", diskBarSize);
         var laborBarSize = Math.round(labor.cost / largestCost * 100) + "%";
         var laborPercent = Math.round(labor.cost / self.totalCosts * 100) + "%";
-        DOM.laborCostPercent.textContent = laborPercent;
-        DOM.laborCostBar.style.width = laborBarSize;
+        DOM.laborCostPercent.text(laborPercent);
+        DOM.laborCostBar.css("width", laborBarSize);
     }
 
     ////
@@ -160,7 +160,7 @@ network = new (function() {
         DOM.nodes,
     ];
     for (var i=0; i<onInputEls.length; i++) {
-        onInputEls[i].addEventListener("input", self.recalc);
+        onInputEls[i].on("input", self.recalc);
     }
 
 })();

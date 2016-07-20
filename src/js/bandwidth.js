@@ -3,58 +3,58 @@ bandwidth = new (function() {
     var self = this;
 
     var DOM = {};
-    DOM.bandwidthDown = select(".results .bandwidth .down");
-    DOM.bandwidthUp = select(".results .bandwidth .up");
-    DOM.dataCap = select(".results .data-cap");
-    DOM.bandwidthCostRow = select(".costs .bandwidth");
-    DOM.bandwidthErrorMsg = select(".costs .bandwidth .error");
-    DOM.bandwidthType = select(".costs .bandwidth .type");
-    DOM.unlimited = select(".costs .unlimited");
-    DOM.unlimitedSpeed = select(".costs .unlimited .speed");
-    DOM.unlimitedPrice = select(".costs .unlimited .price");
-    DOM.unlimitedTime = select(".costs .unlimited .time");
-    DOM.unlimitedSpeed = select(".costs .unlimited .speed");
-    DOM.capped = select(".costs .capped");
-    DOM.cappedSize = select(".costs .capped .size");
-    DOM.cappedTime = select(".costs .capped .time");
-    DOM.cappedPrice = select(".costs .capped .price");
-    DOM.cappedSpeed = select(".costs .capped .speed");
-    DOM.bandwidthCost = select(".costs .bandwidth .total");
-    DOM.ibdSize = select(".initial-block-download .size");
-    DOM.ibdTime = select(".initial-block-download .time");
-    DOM.ibdDate = select(".initial-block-download .date");
-    DOM.overlapRate = select(".costs .overlap-rate");
-    DOM.overlapTime = select(".costs .overlap-time");
-    DOM.hopTime = select(".costs .hop-time");
-    DOM.propagateTime = select(".costs .propagate-time");
+    DOM.bandwidthDown = $(".results .bandwidth .down");
+    DOM.bandwidthUp = $(".results .bandwidth .up");
+    DOM.dataCap = $(".results .data-cap");
+    DOM.bandwidthCostRow = $(".costs .bandwidth");
+    DOM.bandwidthErrorMsg = $(".costs .bandwidth .error");
+    DOM.bandwidthType = $(".costs .bandwidth .type");
+    DOM.unlimited = $(".costs .unlimited");
+    DOM.unlimitedSpeed = $(".costs .unlimited .speed");
+    DOM.unlimitedPrice = $(".costs .unlimited .price");
+    DOM.unlimitedTime = $(".costs .unlimited .time");
+    DOM.unlimitedSpeed = $(".costs .unlimited .speed");
+    DOM.capped = $(".costs .capped");
+    DOM.cappedSize = $(".costs .capped .size");
+    DOM.cappedTime = $(".costs .capped .time");
+    DOM.cappedPrice = $(".costs .capped .price");
+    DOM.cappedSpeed = $(".costs .capped .speed");
+    DOM.bandwidthCost = $(".costs .bandwidth .total");
+    DOM.ibdSize = $(".initial-block-download .size");
+    DOM.ibdTime = $(".initial-block-download .time");
+    DOM.ibdDate = $(".initial-block-download .date");
+    DOM.overlapRate = $(".costs .overlap-rate");
+    DOM.overlapTime = $(".costs .overlap-time");
+    DOM.hopTime = $(".costs .hop-time");
+    DOM.propagateTime = $(".costs .propagate-time");
 
     function calculate() {
 
         self.cost = 0;
 
-        self.bandwidthType = DOM.bandwidthType.value;
+        self.bandwidthType = DOM.bandwidthType.val();
         self.availableSpeed = 0;
         if (self.bandwidthType == "unlimited") {
-            self.availableSpeed = parseFloat(DOM.unlimitedSpeed.value);
+            self.availableSpeed = parseFloat(DOM.unlimitedSpeed.val());
             // calculate annual cost
             var consumptionRatio = network.megabitsPerSecondMax / self.availableSpeed;
-            var unitPrice = parseFloat(DOM.unlimitedPrice.value);
-            var secondsPerUnit = parseFloat(DOM.unlimitedTime.value);
+            var unitPrice = parseFloat(DOM.unlimitedPrice.val());
+            var secondsPerUnit = parseFloat(DOM.unlimitedTime.val());
             var unitsEachYear = consts.secondsPerYear / secondsPerUnit;
             self.cost = unitsEachYear * unitPrice * consumptionRatio;
         }
         else if (self.bandwidthType == "capped") {
-            self.availableSpeed = parseFloat(DOM.cappedSpeed.value);
+            self.availableSpeed = parseFloat(DOM.cappedSpeed.val());
             // validate numbers
-            var availableSize = parseFloat(DOM.cappedSize.value);
-            var secondsPerUnit = parseFloat(DOM.cappedTime.value);
+            var availableSize = parseFloat(DOM.cappedSize.val());
+            var secondsPerUnit = parseFloat(DOM.cappedTime.val());
             var unitsEachDay = consts.secondsPerDay / secondsPerUnit;
             var availableEachDay = unitsEachDay * availableSize;
             self.availableEachMonth = availableEachDay * consts.daysPerMonth;
             // calculate annual cost
             var consumptionRatio = network.gigabytesPerMonth / self.availableEachMonth;
             var unitsEachYear = consts.secondsPerYear / secondsPerUnit;
-            var unitPrice = parseFloat(DOM.cappedPrice.value);
+            var unitPrice = parseFloat(DOM.cappedPrice.val());
             self.cost = unitsEachYear * unitPrice * consumptionRatio;
         }
         network.totalCosts += self.cost;
@@ -93,7 +93,7 @@ bandwidth = new (function() {
         var timeSinceStart = (now - startOfBlockchain) / 1000;
         var blocksSinceStart = timeSinceStart / 600; // 600s per block
         var existingSize = 1 * blocksSinceStart; // 1 MB
-        var futureTime = new Date(DOM.ibdDate.value).getTime();
+        var futureTime = new Date(DOM.ibdDate.val()).getTime();
         var timeToFuture = (futureTime - now) / 1000
         var blocksInFuture = timeToFuture / 600;
         if (blocksInFuture < 0) {
@@ -108,61 +108,61 @@ bandwidth = new (function() {
 
     function render() {
 
-        DOM.unlimited.classList.add("hidden");
-        DOM.capped.classList.add("hidden");
+        DOM.unlimited.addClass("hidden");
+        DOM.capped.addClass("hidden");
         if (self.bandwidthType == "unlimited") {
             // show unlimited options
-            DOM.unlimited.classList.remove("hidden");
+            DOM.unlimited.removeClass("hidden");
             // if impossible, show error
             if (self.availableSpeed < network.megabitsPerSecondMax) {
-                DOM.unlimitedSpeed.classList.add("impossible");
-                DOM.bandwidthErrorMsg.classList.remove("hidden");
+                DOM.unlimitedSpeed.addClass("impossible");
+                DOM.bandwidthErrorMsg.removeClass("hidden");
             }
             else {
-                DOM.unlimitedSpeed.classList.remove("impossible");
-                DOM.bandwidthErrorMsg.classList.add("hidden");
+                DOM.unlimitedSpeed.removeClass("impossible");
+                DOM.bandwidthErrorMsg.addClass("hidden");
             }
         }
         else if (self.bandwidthType == "capped") {
             // show capped options
-            DOM.capped.classList.remove("hidden");
+            DOM.capped.removeClass("hidden");
             // if impossible, show error
             var impossibleSize = self.availableEachMonth < network.gigabytesPerMonth;
             var impossibleSpeed = self.availableSpeed < network.megabitsPerSecondMax;
             if (impossibleSize || impossibleSpeed) {
-                DOM.bandwidthErrorMsg.classList.remove("hidden");
+                DOM.bandwidthErrorMsg.removeClass("hidden");
             }
             else {
-                DOM.bandwidthErrorMsg.classList.add("hidden");
+                DOM.bandwidthErrorMsg.addClass("hidden");
             }
             if (impossibleSize) {
-                DOM.cappedSize.classList.add("impossible");
+                DOM.cappedSize.addClass("impossible");
             }
             else {
-                DOM.cappedSize.classList.remove("impossible");
+                DOM.cappedSize.removeClass("impossible");
             }
             if (impossibleSpeed) {
-                DOM.cappedSpeed.classList.add("impossible");
+                DOM.cappedSpeed.addClass("impossible");
             }
             else {
-                DOM.cappedSpeed.classList.remove("impossible");
+                DOM.cappedSpeed.removeClass("impossible");
             }
         }
 
-        DOM.bandwidthDown.textContent = network.megabitsPerSecondDown.toLocaleString();
-        DOM.bandwidthUp.textContent = network.megabitsPerSecondUp.toLocaleString();
-        DOM.dataCap.textContent = network.gigabytesPerMonth.toLocaleString();
+        DOM.bandwidthDown.text(network.megabitsPerSecondDown.toLocaleString());
+        DOM.bandwidthUp.text(network.megabitsPerSecondUp.toLocaleString());
+        DOM.dataCap.text(network.gigabytesPerMonth.toLocaleString());
 
-        DOM.overlapRate.textContent = Math.round(self.blocksBetweenOverlap);
-        DOM.overlapTime.textContent = self.daysBetweenOverlaps.toLocaleString();
+        DOM.overlapRate.text(Math.round(self.blocksBetweenOverlap));
+        DOM.overlapTime.text(self.daysBetweenOverlaps.toLocaleString());
 
-        DOM.hopTime.textContent = self.secondsToGetBlock.toLocaleString();
-        DOM.propagateTime.textContent = self.propagationTime.toLocaleString();
+        DOM.hopTime.text(self.secondsToGetBlock.toLocaleString());
+        DOM.propagateTime.text(self.propagationTime.toLocaleString());
 
-        DOM.bandwidthCost.textContent = self.cost.toLocaleString();
+        DOM.bandwidthCost.text(self.cost.toLocaleString());
 
-        DOM.ibdSize.textContent = self.ibdSize.toLocaleString();
-        DOM.ibdTime.textContent = self.ibdTime.toLocaleString();
+        DOM.ibdSize.text(self.ibdSize.toLocaleString());
+        DOM.ibdTime.text(self.ibdTime.toLocaleString());
 
     }
 
@@ -194,10 +194,10 @@ bandwidth = new (function() {
         DOM.unlimitedTime,
     ];
     for (var i=0; i<onInputEls.length; i++) {
-        onInputEls[i].addEventListener("input", network.recalc);
+        onInputEls[i].on("input", network.recalc);
     }
     for (var i=0; i<onChangeEls.length; i++) {
-        onChangeEls[i].addEventListener("change", network.recalc);
+        onChangeEls[i].on("change", network.recalc);
     }
 
 })();
