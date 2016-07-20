@@ -47,6 +47,11 @@ code {
 .popup {
     cursor: pointer;
     position: relative;
+    border-bottom: 1px dotted #999;
+    line-height: 13px; /* sets dotted underline correctly */
+}
+.popup * {
+    line-height: 1.42857143; /* from bootstrap */
 }
 div.popup {
     display: inline-block;
