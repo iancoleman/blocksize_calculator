@@ -129,7 +129,15 @@
                             <td>Data Cap</td>
                             <td>must be at least</td>
                             <td class="data-cap">?</td>
-                            <td>GB per 31 days</td>
+                            <td>
+                                GB per
+                                <div class="popup">
+                                month
+                                    <div class="popup-content">
+                                        The duration of a month is calculated as 365 days &div; 12 months.
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <td>Supplied Disk Capacity</td>
@@ -259,12 +267,6 @@
                                         <div class="error text-danger hidden">
                                             This plan cannot provide enough bandwidth to run a full node.
                                         </div>
-                                        <span>
-                                            Days per month is calculated as 365 / 12.
-                                            This is slightly different to the definition
-                                            of a month used in the Constraints section,
-                                            which is 31 days.
-                                        </span>
                                     </div>
                                 </td>
                                 <td class="text-right">
