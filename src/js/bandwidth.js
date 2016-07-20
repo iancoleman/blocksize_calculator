@@ -83,7 +83,7 @@ bandwidth = new (function() {
         }
         var overlapRate = cumRate / cumWeight;
         self.blocksBetweenOverlap = 1 / overlapRate;
-        var secondsBetweenOverlaps = self.blocksBetweenOverlap * network.blocksPerSecond;
+        var secondsBetweenOverlaps = self.blocksBetweenOverlap * network.secondsPerBlock;
         self.daysBetweenOverlaps = secondsBetweenOverlaps / consts.secondsPerDay;
         self.propagationTime = self.secondsToGetBlock * network.numberOfHops;
 
