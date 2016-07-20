@@ -119,8 +119,59 @@
                             <td>must be at least</td>
                             <td class="bandwidth">
                                 <table>
-                                    <tr><td class="text-right">Down: </td><td class="down">?</td></tr>
-                                    <tr><td class="text-right">Up: </td><td class="up">?</td></tr>
+                                    <tr>
+                                        <td class="text-right">Down: </td>
+                                        <td class="popup">
+                                            <span class="down">?</span>
+                                            <div class="popup-content">
+                                                <span class="block-size">1</span> MB block &times;
+                                                8 bits per byte &times;
+                                                (<span class="blocks">1</span> &div;
+                                                <span class="time">600</span>) blocks per second &times;
+                                                1 download peer &times;
+                                                <span class="hops">4</span> hops
+                                                =
+                                                <strong><span class="down">?</span> Mbps</strong>
+                                                <br>
+                                                =<span class="block-size">1</span>*8*(<span class="blocks">1</span>/<span class="time">600</span>)*1*<span class="hops">4</span>
+                                                <br>
+                                                <span>
+                                                    This is the
+                                                    <em>absolute minimum</em>
+                                                    required for the network to operate, and
+                                                    should be an order of magnitude larger to
+                                                    provide reliable operation.
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right">Up: </td>
+                                        <td class="popup">
+                                            <span class="up">?</span>
+                                            <div class="popup-content">
+                                                <span class="block-size">1</span> MB block &times;
+                                                8 bits per byte &times;
+                                                (<span class="blocks">1</span> &div;
+                                                <span class="time">600</span>) blocks per second &times;
+                                                (<span class="peers">8</span> -
+                                                1) upload peers &times;
+                                                <span class="hops">4</span> hops
+                                                =
+                                                <strong><span class="up">?</span> Mbps</strong>
+                                                <br>
+                                                =<span class="block-size">1</span>*8*(<span class="blocks">1</span>/<span class="time">600</span>)*(<span class="peers">8</span>-1)*<span class="hops">4</span>
+                                                <br>
+                                                <span>
+                                                    This is the
+                                                    <em>absolute minimum</em>
+                                                    required for the network to operate, and
+                                                    should be an order of magnitude larger to
+                                                    provide reliable operation.
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </table>
                             </td>
                             <td>Mbps</td>
