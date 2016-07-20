@@ -65,7 +65,7 @@ div.popup {
     border-radius: 3px;
     padding: 5px;
     z-index: 1000;
-    width: 200px;
+    width: 250px;
     max-height: 300px;
     overflow-y: auto;
 }

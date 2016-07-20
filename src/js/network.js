@@ -7,11 +7,13 @@ network = new (function() {
     DOM.size = $(".parameters .block-size");
     DOM.blocks = $(".parameters .blocks");
     DOM.time = $(".parameters .time");
-    DOM.peers = $(".parameters .peers");
+    DOM.peers = $(".parameters input.peers");
     DOM.nodes = $(".parameters .nodes");
     DOM.hops = $(".parameters .hops");
     DOM.blockGrammar = $(".parameters .block-grammar");
     DOM.finalTotal = $(".costs .final .total");
+    DOM.hopNNodes = $(".parameters .hop-n-nodes");
+    DOM.peersStatic = $(".parameters span.peers");
 
     DOM.bandwidthCostPercent = $(".costs .bandwidth .percent .value");
     DOM.bandwidthCostBar = $(".costs .bandwidth .bar");
@@ -35,6 +37,8 @@ network = new (function() {
         self.totalNetworkNodes = parseFloat(DOM.nodes.val());
 
         self.numberOfHops = numberOfHops(self.totalNetworkNodes, self.connectedPeers);
+
+        self.maxNodesForHops = Math.pow(self.connectedPeers, self.numberOfHops);
 
         self.megabitsPerBlock = self.megabytesPerBlock * 8;
 
@@ -96,7 +100,8 @@ network = new (function() {
             DOM.blockGrammar.text("blocks");
         }
         DOM.hops.text(self.numberOfHops.toLocaleString());
-
+        DOM.hopNNodes.text(self.maxNodesForHops.toLocaleString());
+        DOM.peersStatic.text(self.connectedPeers);
         DOM.finalTotal.text(self.totalCosts.toLocaleString());
 
         // Show proportionality bars on viability costs
