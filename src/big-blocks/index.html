@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Big Blocks</title>
+        <style>
+body {
+    font-family: sans-serif;
+}
+a {
+    color: #337ab7;
+}
+.parameter div {
+    display: inline-block;
+    margin: 5px 0;
+}
+.assumptions li {
+    margin-top: 15px;
+}
+.parameter div:nth-of-type(1) {
+    text-align: right;
+}
+.parameter input {
+    text-align: right;
+    width: 30px;
+    padding: 3px 5px 3px 3px;
+}
+.parameter div:nth-of-type(2) {
+    text-align: left;
+}
+.text-large {
+    font-size: 2em;
+    padding: 0 0.2em;
+}
+        </style>
+    </head>
+    <body>
+        <h1>Scaling With Big Blocks</h1>
+        <p>
+            Blocks need to be
+            <span class="text-large">
+                <span class="blocksize">
+                373
+                </span>
+                <span class="units">
+                MB
+                </span>
+            </span>
+            to serve
+        </p>
+        <div class="parameter">
+            <div>
+                <input class="global-population" value="7.5">
+            </div>
+            <div>billion people, of which</div>
+        </div>
+        <div class="parameter">
+            <div>
+                <input class="transactable" value="50">
+            </div>
+            <div>percent can transact (ie excluding infants, dependants etc), and</div>
+        </div>
+        <div class="parameter">
+            <div>
+                <input class="use-bitcoin" value="1">
+            </div>
+            <div>percent of those use bitcoin instead of existing payment options, at an average of</div>
+        </div>
+        <div class="parameter">
+            <div>
+                <input class="tx-per-day" value="5">
+            </div>
+            <div>daily transactions.</div>
+        </div>
+        <p>
+            <a class="details" target="_blank" href="/blocksize/#block-size=373">
+            Does this block size lead to a viable network?
+            </a>
+        </p>
+        <h3>Caveats</h3>
+        <p>The size of blocks will need to be much larger than shown because this calculator makes the following assumptions that would fail in the real world:</p>
+        <ul class="assumptions">
+            <li>
+                Average transaction size is 300 bytes (currently closer to 500 in the real world,
+                see <a target="_blank" href="https://tradeblock.com/bitcoin/historical/1h-f-tsize_per_avg-01101">average transaction size</a>).
+            </li>
+            <li>
+                Peak transaction rate is the same as average transaction rate (there is a lot of variation in transaction rate,
+                see <a target="_blank" href="https://blockchain.info/charts/mempool-size">mempool size</a>).
+            </li>
+            <li>
+                There are only personal transactions, no business transactions (there are many businesses that use bitcoin,
+                see <a target="_blank" href="https://en.wikipedia.org/wiki/List_of_bitcoin_companies">the wikipedia list of bitcoin companies</a>).
+            </li>
+        </ul>
+        <script src="big-block-calculations.js"></script>
+    </body>
+</html>
