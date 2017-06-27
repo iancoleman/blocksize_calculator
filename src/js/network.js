@@ -32,6 +32,8 @@ network = new (function() {
 
         self.megabytesPerBlock = parseFloat(DOM.size.val());
 
+        self.bytesPerBlock = self.megabytesPerBlock * 1024 * 1024;
+
         self.blocksPerSecondNumerator = parseFloat(DOM.blocks.val());
 
         self.blocksPerSecondDenominator = parseFloat(DOM.time.val());
@@ -44,7 +46,7 @@ network = new (function() {
 
         self.maxNodesForHops = Math.pow(self.connectedPeers, self.numberOfHops);
 
-        self.megabitsPerBlock = self.megabytesPerBlock * 8;
+        self.megabitsPerBlock = self.bytesPerBlock * 8 / 1000 / 1000;
 
         self.blocksPerSecond = self.blocksPerSecondNumerator / self.blocksPerSecondDenominator;
 
@@ -65,13 +67,13 @@ network = new (function() {
 
         self.megabytesPerMonth = self.blocksPerMonth * self.megabytesPerBlock * self.connectedPeers;
 
-        self.gigabytesPerMonth = self.megabytesPerMonth / 1000;
+        self.gigabytesPerMonth = self.megabytesPerMonth / 1024;
 
         self.blocksPerYear = consts.secondsPerYear * self.blocksPerSecond;
 
         self.megabytesPerYear = self.blocksPerYear * self.megabytesPerBlock;
 
-        self.gigabytesPerYear = self.megabytesPerYear / 1000;
+        self.gigabytesPerYear = self.megabytesPerYear / 1024;
 
         // Must use min tx size to model worst case scenario.
         // The smaller the tx size the more txs per block and the higher the
@@ -82,7 +84,7 @@ network = new (function() {
         // https://insight.bitpay.com/tx/70108ec3d588a48c825565f0ecf3f553952c7764dca7a9e8dac21d6df56948b1
         self.minTxSize = 226; // bytes
 
-        self.bytesPerBlock = self.megabytesPerBlock * 1000 * 1000;
+        self.bytesPerBlock = self.megabytesPerBlock * 1024 * 1024;
 
         self.txsPerBlock = self.bytesPerBlock / self.minTxSize;
 

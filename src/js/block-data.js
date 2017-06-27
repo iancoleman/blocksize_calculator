@@ -115,7 +115,7 @@
         sizeValues = [];
         minSize = 0; // KB
         sizeStep = 100;
-        maxSize = 1000; // KB
+        maxSize = 1024; // KB
         for (var kb=minSize; kb<=maxSize; kb+=sizeStep) {
             sizeLabels.push(kb.toFixed(0) + "-" + (kb+sizeStep).toFixed(0) + " KB");
             sizeValues.push(0);
@@ -185,7 +185,7 @@
                 thisMonthTimes = [];
             }
             // accumulate data for this month
-            thisMonthSizes.push(parseFloat(block.size) / 1000);
+            thisMonthSizes.push(parseFloat(block.size) / 1024);
             if (i > 0) {
                 var prevBlock = data[i-1];
                 var time = block.time - prevBlock.time;
@@ -198,7 +198,7 @@
             // Total Blocks stat
             totalBlocks += 1;
             // Size
-            var sizekb = block.size / 1000;
+            var sizekb = block.size / 1024;
             var sizeBucket = Math.floor(sizekb / sizeStep);
             sizeValues[sizeBucket] += 1;
             cumSizekb += sizekb;

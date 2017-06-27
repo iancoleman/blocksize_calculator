@@ -10,7 +10,7 @@ disk = new (function() {
 
     function calculate() {
         var diskPrice = parseFloat(DOM.diskPrice.val());
-        var diskSize = parseFloat(DOM.diskSize.val()) * 1000;
+        var diskSize = parseFloat(DOM.diskSize.val()) * 1024;
         var diskRatio = network.gigabytesPerYear / diskSize;
         self.cost = diskPrice * diskRatio;
         network.totalCosts += self.cost;
