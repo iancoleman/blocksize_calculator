@@ -222,7 +222,24 @@
                         <tr>
                             <td>Supplied Disk Capacity</td>
                             <td>must be at least</td>
-                            <td class="disk-consumption">?</td>
+                            <td>
+                                <div class="popup">
+                                    <span class="disk-consumption">?</span>
+                                    <div class="popup-content">
+                                        <div>
+                                            <span class="block-size">1</span> MB block &times;
+                                            (<span class="blocks">1</span> &div;
+                                            <span class="time">600</span>) blocks per second &times;
+                                            60 &times; 60 &times; 24 &times; 365 seconds per year
+                                            &div; 1024 megabytes per gigabyte
+                                            =
+                                            <strong><span class="disk-consumption">?</span> GB per year</strong>
+                                            <br>
+                                            =<span class="block-size">1</span>*(<span class="blocks">1</span>/<span class="time">600</span>)*(60*60*24*365)/1024
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                             <td>
                                 GB per
                                 <div class="popup">
