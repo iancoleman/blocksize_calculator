@@ -68,7 +68,15 @@
                 Simulate a
                 Max Block Size of
                 <input class="block-size form-control small" type="number" value="1" id="block-size" x-url-param>
-                MB at an average mining rate of
+                <div class="popup">
+                    MB
+                    <div class="popup-content">
+                        <div>
+                            A megabyte is 1024 &times; 1024 bytes.
+                        </div>
+                    </div>
+                </div>
+                at an average mining rate of
                 <input class="blocks form-control small" type="number" value="1" id="block-rate" x-url-param>
                 <span class="block-grammar">block</span>
                 every
@@ -178,14 +186,31 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td>Mbps</td>
+                            <td>
+                                <div class="popup">
+                                    Mbps
+                                    <div class="popup-content">
+                                        <div>
+                                            A megabit is 1000 &times; 1000 bits.
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <td>Data Cap</td>
                             <td>must be at least</td>
                             <td class="data-cap">?</td>
                             <td>
-                                GB per
+                                <div class="popup">
+                                    GB
+                                    <div class="popup-content">
+                                        <div>
+                                            A gigabyte is 1024 &times; 1024 &times; 1024 bytes.
+                                        </div>
+                                    </div>
+                                </div>
+                                per
                                 <div class="popup">
                                 month
                                     <div class="popup-content">
@@ -198,7 +223,17 @@
                             <td>Supplied Disk Capacity</td>
                             <td>must be at least</td>
                             <td class="disk-consumption">?</td>
-                            <td>GB per year</td>
+                            <td>
+                                GB per
+                                <div class="popup">
+                                    year
+                                    <div class="popup-content">
+                                        <div>
+                                            A year is 365 days.
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <td>Transaction processing</td>
