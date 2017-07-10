@@ -274,7 +274,35 @@
                         <tr>
                             <td>Transaction processing</td>
                             <td>must be at least</td>
-                            <td class="processing">?</td>
+                            <td>
+                                <div class="popup">
+                                    <span class="processing">?</span>
+                                    <div class="popup-content">
+                                        <div>
+                                            <span class="block-size">1</span> MB block &times;
+                                            1024 &times; 1024 bytes per megabyte &times;
+                                            (<span class="blocks">1</span> &div;
+                                            <span class="time">600</span>) blocks per second &div;
+                                            <span class="min-tx-size">226</span> bytes per tx
+                                            =
+                                            <strong><span class="processing">?</span> tx per second</strong>
+                                            <br>
+                                            =<span class="block-size">1</span>*1024*1024*(<span class="blocks">1</span>/<span class="time">600</span>)/<span class="min-tx-size">226</span>
+                                            <br>
+                                            <br>
+                                            <span>
+                                                This assumes the smallest transaction size, since it results
+                                                in the highest (worst-case) tx/s. However, the
+                                                <em>computation</em> to process a transaction varies
+                                                non-linearly, so even if you can process
+                                                <span class="processing">?</span> simple transactions per
+                                                second, you may not be able to process one large complex
+                                                <span class="block-size">?</span> MB transaction quickly enough.
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                             <td>transactions per second</td>
                         </tr>
                     </tbody>

@@ -20,6 +20,7 @@ network = new (function() {
     DOM.static.blocks = $(".results span.blocks");
     DOM.static.time = $(".results span.time");
     DOM.static.peers = $("span.peers");
+    DOM.static.minTxSize = $("span.min-tx-size");
 
     DOM.bandwidthCostPercent = $(".costs .bandwidth .percent .value");
     DOM.bandwidthCostBar = $(".costs .bandwidth .bar");
@@ -115,6 +116,7 @@ network = new (function() {
         DOM.static.blocks.text(self.blocksPerSecondNumerator);
         DOM.static.time.text(self.blocksPerSecondDenominator);
         DOM.static.peers.text(self.connectedPeers);
+        DOM.static.minTxSize.text(self.minTxSize);
         DOM.finalTotal.text(self.totalCosts.toLocaleString());
 
         // Show proportionality bars on viability costs
