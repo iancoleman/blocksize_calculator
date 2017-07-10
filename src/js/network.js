@@ -91,7 +91,7 @@ network = new (function() {
 
         self.txsPerBlock = self.bytesPerBlock / self.minTxSize;
 
-        self.txsPerSecond = self.txsPerBlock * self.blocksPerSecond;
+        self.txsPerSecond = self.txsPerBlock * self.blocksPerSecond * self.numberOfHops;
 
         self.totalCosts = 0;
 
