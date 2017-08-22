@@ -110,3 +110,7 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
         -webkit-appearance: none;
 }
+
+.idiot-warning {
+    padding: 1em 15px;
+}
