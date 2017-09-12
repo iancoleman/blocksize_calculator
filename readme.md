@@ -4,8 +4,8 @@ What is the effect of changing the bitcoin `MAX_BLOCK_SIZE`?
 
 This tool helps work that out.
 
-Hosted at [https://dcpos.github.io/blocksize/](https://dcpos.github.io/blocksize/)
-and [https://dcpos.github.io/blocksize/month-by-month/](https://dcpos.github.io/blocksize/month-by-month)
+Hosted at [https://iancoleman.github.io/blocksize/](https://iancoleman.github.io/blocksize/)
+and [https://iancoleman.github.io/blocksize/month-by-month/](https://iancoleman.github.io/blocksize/month-by-month)
 
 ## Tests
 
