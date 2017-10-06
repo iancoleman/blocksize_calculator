@@ -1,3 +1,9 @@
+# DEPRECATED
+
+As of 2017-10-01 this tool is no longer maintained.
+
+There are too many differences between when this was created and the way bitcoin now functions. See [block weight](https://en.bitcoin.it/wiki/Block_weight).
+
 # Block Size Calculator
 
 What is the effect of changing the bitcoin `MAX_BLOCK_SIZE`?
